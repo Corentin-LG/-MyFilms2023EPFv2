@@ -21,4 +21,16 @@
         android:id="@+id/home_list_button"
         android:text="Lister les clients" />
 
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/home_add_film_button"
+        android:text="Ajouter un film" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/home_list_film_button"
+        android:text="Lister les films" />
+
 </LinearLayout>

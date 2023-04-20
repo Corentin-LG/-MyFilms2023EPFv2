@@ -14,6 +14,8 @@ class HomeActivity : AppCompatActivity() {
 
         val addButton = findViewById<Button>(R.id.home_add_button)
         val listButton = findViewById<Button>(R.id.home_list_button)
+        val addFilmButton = findViewById<Button>(R.id.home_add_film_button)
+        val listFilmButton = findViewById<Button>(R.id.home_list_film_button)
 
         addButton.click {
             val intent = Intent(this, AddClientActivity::class.java)
@@ -25,6 +27,15 @@ class HomeActivity : AppCompatActivity() {
                 startActivity(intent)
         }
 
+        addFilmButton.click {
+            val intent = Intent(this, AddFilmActivity::class.java)
+            startActivity(intent)
+        }
+
+        listFilmButton.click {
+            val intent = Intent(this, ListFilmActivity::class.java)
+            startActivity(intent)
+        }
 
     }
 }
