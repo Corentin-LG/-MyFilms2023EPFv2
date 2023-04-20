@@ -7,11 +7,9 @@ import android.widget.*
 import android.widget.SeekBar.OnSeekBarChangeListener
 
 private const val TAG = "AddClientActivity"
-
 private const val AGE_MAX = 65
-
 private const val AGE_MIN = 18
-//list_clients
+
 class AddClientActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,10 +31,8 @@ class AddClientActivity : AppCompatActivity() {
             override fun onProgressChanged(p0: SeekBar?, progress: Int, p2: Boolean) {
                 ageTextview.text = (progress+ AGE_MIN).toString()
             }
-
             override fun onStartTrackingTouch(p0: SeekBar?) = Unit
             override fun onStopTrackingTouch(p0: SeekBar?) = Unit
-
         })
 
         val levelSpinner = findViewById<Spinner>(R.id.add_client_level_spinner)
@@ -51,7 +47,6 @@ class AddClientActivity : AppCompatActivity() {
                 if(genderRadioGroup.checkedRadioButtonId == R.id.add_client_gender_man_radiobutton) 1 else 2
             Log.d(TAG, "genre: ${gender}")
             Log.d(TAG, "Niveau : ${levelSpinner.selectedItem}")
-
             
             finish()
 

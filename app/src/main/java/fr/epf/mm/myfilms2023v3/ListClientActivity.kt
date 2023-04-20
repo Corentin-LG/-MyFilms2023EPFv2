@@ -23,10 +23,7 @@ class ListClientActivity : AppCompatActivity() {
         setContentView(R.layout.activity_list_client)
 
         recyclerView = findViewById<RecyclerView>(R.id.list_client_recyclerview)
-
         recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
-
-
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -66,6 +63,5 @@ class ListClientActivity : AppCompatActivity() {
             }
             recyclerView.adapter = ClientAdapter(this@ListClientActivity, clients)
         }
-
     }
 }

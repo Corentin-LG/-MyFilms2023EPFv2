@@ -39,7 +39,6 @@ class ClientAdapter(val context: Context, val clients: List<Client>) : RecyclerV
 
         cardView.click {
             val intent = Intent(context, DetailsClientActivity::class.java)
-     //       intent.putExtra("id", position)
             intent.putExtra("client", client)
             context.startActivity(intent)
         }
