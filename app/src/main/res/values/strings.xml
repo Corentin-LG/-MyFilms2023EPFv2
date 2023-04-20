@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">MyFilms2023v3</string>
+    <string name="client_last_name">Nom</string>
+    <string name="add_button_label">Ajouter</string>
+
+    <string name="gender_man">Homme</string>
+    <string name="client_gender">Sexe</string>
+    <string name="gender_woman">Femme</string>
+    <string name="level_advanced">Avancé</string>
+    <string name="add_client_message_succes">Client %1$s ajouté !</string>
+
+    <string-array name="levels">
+        <item>Débutant</item>
+        <item>Intermédiaire</item>
+        <item>@string/level_advanced</item>
+    </string-array>
+
+</resources>
