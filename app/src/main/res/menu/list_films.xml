@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/action_synchro"
+        android:id="@+id/action_synchro_film"
         android:icon="@drawable/baseline_cloud_sync_24"
         android:title="Synchro"
         app:showAsAction="ifRoom" />

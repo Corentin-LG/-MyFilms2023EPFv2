@@ -16,7 +16,7 @@
             android:id="@+id/view_film_imageview"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            tools:src="@drawable/man"
+            tools:src="@drawable/baseline_personal_video_24"
             />
         <TextView
             android:layout_gravity="center_vertical"

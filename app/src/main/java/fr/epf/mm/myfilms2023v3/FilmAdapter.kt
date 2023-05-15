@@ -28,16 +28,16 @@ class FilmAdapter(val context: Context, val films: List<Film>) : RecyclerView.Ad
         val film = films[position]
         val view = holder.itemView
         val textView = view.findViewById<TextView>(R.id.view_film_textview)
-        textView.text = "${film.firstName} ${film.lastName}"
+        textView.text = "${film.id} ${film.title}"
 
         val imageView = view.findViewById<ImageView>(R.id.view_film_imageview)
 
-        imageView.setImageResource(film.getImage())
+        //imageView.setImageResource(film.getImage())
 
         val cardView = view.findViewById<CardView>(R.id.view_film_cardview)
 
         cardView.click {
-            val intent = Intent(context, DetailsClientActivity::class.java)
+            val intent = Intent(context, DetailsFilmActivity::class.java)
             intent.putExtra("film", film)
             context.startActivity(intent)
         }

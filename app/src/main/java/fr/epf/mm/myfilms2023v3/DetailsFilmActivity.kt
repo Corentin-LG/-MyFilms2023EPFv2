@@ -25,7 +25,7 @@ class DetailsFilmActivity : AppCompatActivity() {
         val lastnameTextView = findViewById<TextView>(R.id.details_film_lastname_textview)
         val film = intent.extras?.get("film") as? Film
 
-        lastnameTextView.text = film?.lastName ?: "Non renseigné"
+        lastnameTextView.text = film?.title ?: "Non renseigné"
         imageView = findViewById<ImageView>(R.id.details_film_imageview)
     }
 

@@ -1,6 +1,6 @@
 package fr.epf.mm.myfilms2023v3
 
-import retrofit2.Call
+import fr.epf.mm.myfilms2023v3.model.Client
 import retrofit2.http.GET
 
 interface RandomUserService {

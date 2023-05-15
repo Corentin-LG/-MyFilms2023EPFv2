@@ -4,13 +4,33 @@ package fr.epf.mm.myfilms2023v3.model
 //003dbf4d555d5ab3a9f692a799bf78bb
 
 import android.os.Parcelable
-import kotlinx.parcelize.Parcelize
+import com.google.gson.annotations.SerializedName
+import kotlinx.android.parcel.Parcelize
 
 @Parcelize
 data class Film (
-    val lastName: String,
-    val firstName: String,
-    val gender: Gender
-) : Parcelable {
+    val id : Long,
+    val title : String,
+    val poster : String,
+    val release : String
+
+) : Parcelable{
 
 }
+
+//data class Film (
+//    @SerializedName("id")
+//    val id : String ?,
+//
+//    @SerializedName("title")
+//    val title : String?,
+//
+//    @SerializedName("poster_path")
+//    val poster : String?,
+//
+//    @SerializedName("release_date")
+//    val release : String?
+//
+//) : Parcelable{
+//    constructor() : this("", "", "", "")
+//}

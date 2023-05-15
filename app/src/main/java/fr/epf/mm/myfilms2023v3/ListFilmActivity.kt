@@ -9,11 +9,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import fr.epf.mm.myfilms2023v3.model.Film
-import fr.epf.mm.myfilms2023v3.model.Gender
 import kotlinx.coroutines.runBlocking
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
-
+//view_film
 class ListFilmActivity : AppCompatActivity() {
 
     lateinit var recyclerView: RecyclerView
@@ -37,11 +36,33 @@ class ListFilmActivity : AppCompatActivity() {
                 val intent = Intent(this, AddFilmActivity::class.java)
                 startActivity(intent)
             }
-            R.id.action_synchro -> {
-                synchro()
+            R.id.action_synchro_film -> {
+                synchro2()
             }
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    private fun synchro2() {
+        val retrofitFilm = Retrofit.Builder()
+            .addConverterFactory(MoshiConverterFactory.create())
+            .baseUrl("https://api.themoviedb.org")
+            .build()
+
+        val service = retrofitFilm.create(PopularFilmService::class.java)
+
+        runBlocking {
+            val films = service.getFilms().results.map {
+                Log.d("EPF", "$it")
+                Film(
+                    it.id,
+                    it.title,
+                    it.poster_path,
+                    it.release_date
+                )
+            }
+            recyclerView.adapter = FilmAdapter(this@ListFilmActivity, films)
+        }
     }
 
     private fun synchro() {
@@ -50,18 +71,18 @@ class ListFilmActivity : AppCompatActivity() {
             .baseUrl("https://randomuser.me/")
             .build()
 
-        val service = retrofit.create(RandomUserService::class.java)
+        val service = retrofit.create(PopularFilmService::class.java)
 
         runBlocking {
-            val films = service.getUsers().results.map {
+            val films = service.getFilms().results.map {
                 Log.d("EPF", "$it")
-                Film(
-                    it.name.last,
-                    it.name.first,
-                    if (it.gender == "male") Gender.MAN else Gender.WOMAN
-                )
+//                Film(
+//                    it.name.last,
+//                    it.name.first,
+//                    if (it.gender == "male") Gender.MAN else Gender.WOMAN
+//                )
             }
-            recyclerView.adapter = FilmAdapter(this@ListFilmActivity, films)
+//            recyclerView.adapter = FilmAdapter(this@ListFilmActivity, films)
         }
     }
 }
