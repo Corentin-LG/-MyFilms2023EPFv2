@@ -10,6 +10,7 @@ import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import fr.epf.mm.myfilms2023v3.model.Film
+import com.bumptech.glide.Glide
 
 class FilmViewHolder(view: View) : RecyclerView.ViewHolder(view)
 
@@ -25,6 +26,8 @@ class FilmAdapter(val context: Context, val films: List<Film>) : RecyclerView.Ad
     override fun getItemCount() = films.size
 
     override fun onBindViewHolder(holder: FilmViewHolder, position: Int) {
+        val IMAGE_BASE = "https://image.tmdb.org/t/p/w500/"
+
         val film = films[position]
         val view = holder.itemView
         val textView = view.findViewById<TextView>(R.id.view_film_textview)
@@ -32,7 +35,7 @@ class FilmAdapter(val context: Context, val films: List<Film>) : RecyclerView.Ad
 
         val imageView = view.findViewById<ImageView>(R.id.view_film_imageview)
 
-        //imageView.setImageResource(film.getImage())
+        Glide.with(imageView).load(IMAGE_BASE + film.poster).into(imageView)
 
         val cardView = view.findViewById<CardView>(R.id.view_film_cardview)
 
