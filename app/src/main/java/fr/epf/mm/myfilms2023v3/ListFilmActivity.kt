@@ -64,25 +64,4 @@ class ListFilmActivity : AppCompatActivity() {
             recyclerView.adapter = FilmAdapter(this@ListFilmActivity, films)
         }
     }
-
-    private fun synchro() {
-        val retrofit = Retrofit.Builder()
-            .addConverterFactory(MoshiConverterFactory.create())
-            .baseUrl("https://randomuser.me/")
-            .build()
-
-        val service = retrofit.create(PopularFilmService::class.java)
-
-        runBlocking {
-            val films = service.getFilms().results.map {
-                Log.d("EPF", "$it")
-//                Film(
-//                    it.name.last,
-//                    it.name.first,
-//                    if (it.gender == "male") Gender.MAN else Gender.WOMAN
-//                )
-            }
-//            recyclerView.adapter = FilmAdapter(this@ListFilmActivity, films)
-        }
-    }
 }
