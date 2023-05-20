@@ -8,11 +8,13 @@ import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.room.Room
 import fr.epf.mm.myfilms2023v3.model.Film
+import fr.epf.mm.myfilms2023v3.model.FilmsDatabase
 import kotlinx.coroutines.runBlocking
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
-//view_film
+
 class ListFilmActivity : AppCompatActivity() {
 
     lateinit var recyclerView: RecyclerView
@@ -37,10 +39,37 @@ class ListFilmActivity : AppCompatActivity() {
                 startActivity(intent)
             }
             R.id.action_synchro_film -> {
-                synchro2()
+                synchro()
             }
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    private fun synchro() {
+        val retrofitFilm = Retrofit.Builder()
+            .addConverterFactory(MoshiConverterFactory.create())
+            .baseUrl("https://api.themoviedb.org")
+            .build()
+
+        val service = retrofitFilm.create(PopularFilmService::class.java)
+
+        val appDatabase = Room.databaseBuilder(
+            applicationContext,
+            FilmsDatabase::class.java, "filmDatabase"
+        ).build()
+
+        runBlocking {
+            val films = service.getFilms().results.map {
+                Log.d("EPF", "$it")
+                Film(
+                    it.id,
+                    it.title,
+                    it.poster_path,
+                    it.release_date
+                )
+            }
+            recyclerView.adapter = FilmAdapter(this@ListFilmActivity, films)
+        }
     }
 
     private fun synchro2() {

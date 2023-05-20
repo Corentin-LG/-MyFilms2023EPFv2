@@ -1,12 +1,14 @@
 package fr.epf.mm.myfilms2023v3.model
 
 import android.os.Parcelable
-import com.google.gson.annotations.SerializedName
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import kotlinx.android.parcel.Parcelize
 
+@Entity(tableName = "films")
 @Parcelize
 data class Film (
-    val id : Long,
+    @PrimaryKey val id : Long,
     val title : String,
     val poster : String,
     val release : String
