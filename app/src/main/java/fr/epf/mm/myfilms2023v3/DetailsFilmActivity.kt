@@ -10,6 +10,7 @@ import android.view.MenuItem
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import com.bumptech.glide.Glide
 import fr.epf.mm.myfilms2023v3.model.Film
 
 private const val PICTURE_REQUEST_CODE = 100
@@ -25,8 +26,11 @@ class DetailsFilmActivity : AppCompatActivity() {
         val lastnameTextView = findViewById<TextView>(R.id.details_film_lastname_textview)
         val film = intent.extras?.get("film") as? Film
 
+        val IMAGE_BASE = "https://image.tmdb.org/t/p/w500/"
+
         lastnameTextView.text = film?.title ?: "Non renseigné"
         imageView = findViewById<ImageView>(R.id.details_film_imageview)
+        //Glide.with(imageView).load(IMAGE_BASE + film.poster).into(imageView)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
