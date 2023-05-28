@@ -40,7 +40,7 @@ class DetailsFilmActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.action_add_picture -> {
+            R.id.action_add_picture_film -> {
                 val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
                 startActivityForResult(intent, PICTURE_REQUEST_CODE)
             }

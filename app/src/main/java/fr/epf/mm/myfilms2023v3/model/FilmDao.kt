@@ -1,17 +1,14 @@
 package fr.epf.mm.myfilms2023v3.model
 
-import androidx.room.Dao
-import androidx.room.Delete
-import androidx.room.Insert
-import androidx.room.Query
-import androidx.room.RawQuery
-import androidx.room.Update
+import androidx.room.*
 import androidx.sqlite.db.SupportSQLiteQuery
 
 @Dao
 public interface FilmDao {
     @Insert
     fun insert(film: Film)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertAll(films: List<Film>)
     @Update
     fun update(film: Film)
     @Delete

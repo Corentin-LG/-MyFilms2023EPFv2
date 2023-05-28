@@ -26,6 +26,9 @@ data class Movie(@Query("adult") val adult: Boolean?,
                  @Query("vote_count") val vote_count: Int?)
 
 
+//https://api.themoviedb.org/3/discover/movie?api_key=003dbf4d555d5ab3a9f692a799bf78bb&sort_by=popularity.desc&with_genres=28&page=1
+//https://api.themoviedb.org/3/discover/movie?api_key=003dbf4d555d5ab3a9f692a799bf78bb&sort_by=popularity.desc&with_genres=28&page=2
+
 //interface PopularFilmService {
 //
 //    @GET("/3/movie/popular?api_key=003dbf4d555d5ab3a9f692a799bf78bb")
