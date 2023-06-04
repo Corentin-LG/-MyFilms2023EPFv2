@@ -48,11 +48,6 @@ class ListFilmActivity : AppCompatActivity() {
         synchro()
     }
 
-    private fun performSearch(query: String) {
-        println("Texte de recherche : $query")
-        // Faites ici ce que vous voulez avec le texte de recherche
-    }
-
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.list_films, menu)
         return super.onCreateOptionsMenu(menu)

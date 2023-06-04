@@ -22,15 +22,18 @@ class DetailsFilmActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_details_film)
-
-        val lastnameTextView = findViewById<TextView>(R.id.details_film_lastname_textview)
-        val film = intent.extras?.get("film") as? Film
-
         val IMAGE_BASE = "https://image.tmdb.org/t/p/w500/"
 
-        lastnameTextView.text = film?.title ?: "Non renseigné"
+        val titleTextView = findViewById<TextView>(R.id.details_film_title_textview)
+        val releaseTextView = findViewById<TextView>(R.id.details_film_release_textview)
+        val overviewTextView = findViewById<TextView>(R.id.details_film_overview_textview)
+
+        val film = intent.extras?.get("film") as? Film
+        titleTextView.text = film?.title ?: "Non renseigné"
+        releaseTextView.text = film?.release ?: "Non renseigné"
+//        overviewTextView.text = film?.overview ?: "Non renseigné"
+
         imageView = findViewById<ImageView>(R.id.details_film_imageview)
-        //Glide.with(imageView).load(IMAGE_BASE + film.poster).into(imageView)
         film?.let { Glide.with(imageView).load(IMAGE_BASE + it.poster).into(imageView) }
     }
 
