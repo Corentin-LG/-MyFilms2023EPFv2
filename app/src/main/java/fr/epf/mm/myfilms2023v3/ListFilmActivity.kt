@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -29,6 +30,7 @@ class ListFilmActivity : AppCompatActivity() {
 
         recyclerView = findViewById(R.id.list_film_recyclerview)
         recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        synchro()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -43,7 +45,7 @@ class ListFilmActivity : AppCompatActivity() {
                 startActivity(intent)
             }
             R.id.action_synchro_film -> {
-                synchro()
+//                synchro()
             }
         }
         return super.onOptionsItemSelected(item)
@@ -92,4 +94,9 @@ class ListFilmActivity : AppCompatActivity() {
             Log.d("ExceptionFilm", "test7")
         }
     }
+}
+
+fun View.click(action : (View) -> Unit){
+    Log.d("CLICK", "click")
+    this.setOnClickListener(action)
 }

@@ -31,6 +31,7 @@ class DetailsFilmActivity : AppCompatActivity() {
         lastnameTextView.text = film?.title ?: "Non renseigné"
         imageView = findViewById<ImageView>(R.id.details_film_imageview)
         //Glide.with(imageView).load(IMAGE_BASE + film.poster).into(imageView)
+        film?.let { Glide.with(imageView).load(IMAGE_BASE + it.poster).into(imageView) }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
