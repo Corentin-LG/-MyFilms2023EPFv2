@@ -11,18 +11,18 @@ interface PopularFilmService {
 }
 
 data class GetPopularFilmsResult(@Query("page") val page: Int,@Query("results") val results: List<Movie>)
-data class Movie(@Query("adult") val adult: Boolean?,
-                 @Query("backdrop_path") val backdrop_path: String?,
+data class Movie(@Query("adult") val adult: Boolean,
+                 @Query("backdrop_path") val backdrop_path: String,
                  @Query("id") val id: Long,
-                 @Query("original_language") val original_language: String?,
-                 @Query("original_title") val original_title: String?,
+                 @Query("original_language") val original_language: String,
+                 @Query("original_title") val original_title: String,
                  @Query("overview") val overview: String,
-                 @Query("popularity") val popularity: Float?,
+                 @Query("popularity") val popularity: Float,
                  @Query("poster_path") val poster_path: String,
                  @Query("release_date") val release_date: String,
                  @Query("title") val title: String,
-                 @Query("video") val video: Boolean?,
-                 @Query("vote_average") val vote_average: Float?,
+                 @Query("video") val video: Boolean,
+                 @Query("vote_average") val vote_average: Float,
                  @Query("vote_count") val vote_count: Int?)
 
 

@@ -30,8 +30,8 @@ class DetailsFilmActivity : AppCompatActivity() {
 
         val film = intent.extras?.get("film") as? Film
         titleTextView.text = film?.title ?: "Non renseigné"
-        releaseTextView.text = film?.release ?: "Non renseigné"
-//        overviewTextView.text = film?.overview ?: "Non renseigné"
+        releaseTextView.text = film?.overview?: "Non renseigné"
+        //overviewTextView.text = film?.overview ?: "Non renseigné"
 
         imageView = findViewById<ImageView>(R.id.details_film_imageview)
         film?.let { Glide.with(imageView).load(IMAGE_BASE + it.poster).into(imageView) }

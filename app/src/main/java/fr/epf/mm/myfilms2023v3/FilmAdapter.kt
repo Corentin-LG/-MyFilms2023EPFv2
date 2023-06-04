@@ -34,7 +34,8 @@ class FilmAdapter(val context: Context, val films: List<Film>) : RecyclerView.Ad
         val view = holder.itemView
         val textView = view.findViewById<TextView>(R.id.view_film_textview)
         Log.d("FilmAdapt", film.title)
-        textView.text = "${film.id} ${film.title} ${film.release}"
+        textView.text = "${film.id} ${film.title}"
+        //textView.text = "${film.id} ${film.title} ${film.release}"
 
         val imageView = view.findViewById<ImageView>(R.id.view_film_imageview)
 

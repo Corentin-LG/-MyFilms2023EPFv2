@@ -11,7 +11,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_begin="159dp" />
+        app:layout_constraintGuide_begin="178dp" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline_film_horizontal"
@@ -23,15 +23,15 @@
 
     <ImageView
         android:id="@+id/details_film_imageview"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
         android:scaleType="fitXY"
         app:layout_constraintBottom_toBottomOf="@id/guideline_film_horizontal"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.1"
+        app:layout_constraintHorizontal_bias="0.051"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.04"
+        app:layout_constraintVertical_bias="0.066"
         tools:srcCompat="@tools:sample/avatars" />
 
     <TextView
@@ -64,9 +64,9 @@
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.449"
+        app:layout_constraintHorizontal_bias="0.036"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.165"
+        app:layout_constraintTop_toBottomOf="@+id/details_film_imageview"
+        app:layout_constraintVertical_bias="0.021"
         tools:text="@tools:sample/last_names" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -82,14 +82,16 @@ class ListFilmActivity : AppCompatActivity() {
                         it.id,
                         it.title,
                         it.poster_path,
-                        it.release_date
+                        it.overview
+                    //si la classe change, il faut suppr l'appli soit trouver comment suppr a data base de la version atctuelle
+                    //la migration n'a pas marché
                     )
                 }
                 withContext(Dispatchers.IO) {
                     appDatabase.filmDao().insertAll(films)
                     Log.d("ExceptionFilm", appDatabase.filmDao().findAllFilms().toString())
                 }
-                Log.d("ExceptionFilm", appDatabase.toString())
+                //Log.d("ExceptionFilm", appDatabase.toString())
                 recyclerView.adapter = FilmAdapter(this@ListFilmActivity, films)
             } catch (e: Exception) {
                 Log.d("ExceptionFilm", e.message!!)
