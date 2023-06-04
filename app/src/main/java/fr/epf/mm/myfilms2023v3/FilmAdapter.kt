@@ -2,6 +2,7 @@ package fr.epf.mm.myfilms2023v3
 
 import android.content.Context
 import android.content.Intent
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,6 +21,7 @@ class FilmAdapter(val context: Context, val films: List<Film>) : RecyclerView.Ad
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FilmViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
         val view = layoutInflater.inflate(R.layout.view_film, parent, false)
+        Log.d("FilmAdapt", films.toString())
         return FilmViewHolder(view)
     }
 
@@ -31,6 +33,7 @@ class FilmAdapter(val context: Context, val films: List<Film>) : RecyclerView.Ad
         val film = films[position]
         val view = holder.itemView
         val textView = view.findViewById<TextView>(R.id.view_film_textview)
+        Log.d("FilmAdapt", film.title)
         textView.text = "${film.id} ${film.title} ${film.release}"
 
         val imageView = view.findViewById<ImageView>(R.id.view_film_imageview)
