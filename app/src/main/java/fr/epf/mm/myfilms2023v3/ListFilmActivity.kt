@@ -23,6 +23,7 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 class ListFilmActivity : AppCompatActivity() {
 
     lateinit var recyclerView: RecyclerView
+    lateinit var appDatabase: FilmsDatabase
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,6 +31,7 @@ class ListFilmActivity : AppCompatActivity() {
 
         recyclerView = findViewById(R.id.list_film_recyclerview)
         recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        appDatabase = AppDatabase.getInstance(this)
         synchro()
     }
 
@@ -64,7 +66,7 @@ class ListFilmActivity : AppCompatActivity() {
 //            FilmsDatabase::class.java, "filmDatabase"
 //        ).build()
 
-        val appDatabase = AppDatabase.getInstance(this)
+//        appDatabase = AppDatabase.getInstance(this)
 
         runBlocking {
             try {
