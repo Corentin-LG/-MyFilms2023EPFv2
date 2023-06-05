@@ -30,6 +30,9 @@ class ListFilmActivity : AppCompatActivity() {
     lateinit var recyclerView: RecyclerView
     lateinit var appDatabase: FilmsDatabase
     lateinit var searchView: androidx.appcompat.widget.SearchView
+    val apiKey ="003dbf4d555d5ab3a9f692a799bf78bb"
+
+    private var searchQuery: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,8 +44,8 @@ class ListFilmActivity : AppCompatActivity() {
 
         searchView = findViewById(R.id.search_bar_searchview)
         searchView.clearFocus()
-        val queryTextListener = MyQueryTextListener()
-
+        //val queryTextListener = MyQueryTextListener(this)
+        val queryTextListener = MyQueryTextListener(this@ListFilmActivity)
         searchView.setOnQueryTextListener(queryTextListener)
 
         synchro()
@@ -76,21 +79,24 @@ class ListFilmActivity : AppCompatActivity() {
 
         runBlocking {
             try {
-                val films = service.getFilms().results.map {
+                //val films = service.getFilms().results.map {
+                ///3/search/movie?query=star&include_adult=false&language=en-US&page=1"
+                ///3/search/movie?query=star"
+                val films = service.getFilm("/3/movie/popular?api_key=$apiKey").results.map {
                     Log.d("EPF", "$it")
                     Film(
                         it.id,
                         it.title,
-                        it.poster_path,
-                        it.overview
+                        it.poster_path?:"",
+                        it.overview?:""
                     //si la classe change, il faut suppr l'appli soit trouver comment suppr a data base de la version atctuelle
                     //la migration n'a pas marché
                     )
                 }
-                withContext(Dispatchers.IO) {
-                    appDatabase.filmDao().insertAll(films)
-                    Log.d("ExceptionFilm", appDatabase.filmDao().findAllFilms().toString())
-                }
+//                withContext(Dispatchers.IO) {
+//                    appDatabase.filmDao().insertAll(films)
+//                    Log.d("ExceptionFilm", appDatabase.filmDao().findAllFilms().toString())
+//                }
                 //Log.d("ExceptionFilm", appDatabase.toString())
                 recyclerView.adapter = FilmAdapter(this@ListFilmActivity, films)
             } catch (e: Exception) {
@@ -98,6 +104,39 @@ class ListFilmActivity : AppCompatActivity() {
             }
         }
     }
+
+    fun searchByUser(query: String) {
+        searchQuery = query
+
+        val retrofitFilm = Retrofit.Builder()
+            .addConverterFactory(MoshiConverterFactory.create())
+            .baseUrl("https://api.themoviedb.org")
+            .build()
+
+        val service = retrofitFilm.create(PopularFilmService::class.java)
+
+        runBlocking {
+            try {
+                //https://api.themoviedb.org/3/search/movie?api_key=003dbf4d555d5ab3a9f692a799bf78bb&query=star
+                val films = service.getFilm("/3/search/movie?api_key=$apiKey&query=$searchQuery").results.map {
+                    Log.d("EPF", "$it")
+                    Film(
+                        it.id,
+                        it.title,
+                        it.poster_path?:"",
+                        it.overview?:""
+                    )
+                }
+//                withContext(Dispatchers.IO) {
+//                    appDatabase.filmDao().insertAll(films)
+//                }
+                recyclerView.adapter = FilmAdapter(this@ListFilmActivity, films)
+            } catch (e: Exception) {
+                Log.d("ExceptionFilm", e.message!!)
+            }
+        }
+    }
+
 }
 
 fun View.click(action : (View) -> Unit){
