@@ -1,27 +1,18 @@
 package fr.epf.mm.myfilms2023v3
 
-import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.Button
-import android.widget.EditText
-import android.widget.SearchView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.room.Room
 import fr.epf.mm.myfilms2023v3.model.AppDatabase
 import fr.epf.mm.myfilms2023v3.model.Film
 import fr.epf.mm.myfilms2023v3.model.FilmsDatabase
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.newFixedThreadPoolContext
 import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.withContext
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 
@@ -75,18 +66,23 @@ class ListFilmActivity : AppCompatActivity() {
             .baseUrl("https://api.themoviedb.org")
             .build()
 
-        val service = retrofitFilm.create(PopularFilmService::class.java)
+        val service = retrofitFilm.create(FilmService::class.java)
 
         runBlocking {
             try {
                 val films = service.getFilm("/3/movie/popular?api_key=$apiKey").results.map {
-                    Log.d("EPF", "$it")
                     Film(
                         it.id,
                         it.title,
                         it.poster_path?:"",
                         it.release_date,
-                        it.overview?:""
+                        it.overview?:"",
+                        if (it.genre_ids.isNotEmpty()) it.genre_ids[0] else 0
+
+//                        (it.genre_ids.get(0)?:"") as Int,
+//                        (it.genre_ids.get(1)?:"") as Int,
+//                        (it.genre_ids.get(2)?:"") as Int
+
                     //si la classe change, il faut suppr l'appli soit trouver comment suppr a data base de la version atctuelle
                     //la migration n'a pas marché
                     )
@@ -109,19 +105,19 @@ class ListFilmActivity : AppCompatActivity() {
             .baseUrl("https://api.themoviedb.org")
             .build()
 
-        val service = retrofitFilm.create(PopularFilmService::class.java)
+        val service = retrofitFilm.create(FilmService::class.java)
 
         runBlocking {
             try {
                 //https://api.themoviedb.org/3/search/movie?api_key=003dbf4d555d5ab3a9f692a799bf78bb&query=star
                 val films = service.getFilm("/3/search/movie?api_key=$apiKey&query=$searchQuery").results.map {
-                    Log.d("EPF", "$it")
                     Film(
                         it.id,
                         it.title,
                         it.poster_path?:"",
                         it.release_date,
-                        it.overview?:""
+                        it.overview?:"",
+                        if (it.genre_ids.isNotEmpty()) it.genre_ids[0] else 0
                     )
                 }
 //                withContext(Dispatchers.IO) {
@@ -133,10 +129,8 @@ class ListFilmActivity : AppCompatActivity() {
             }
         }
     }
-
 }
 
 fun View.click(action : (View) -> Unit){
-    Log.d("CLICK", "click")
     this.setOnClickListener(action)
 }

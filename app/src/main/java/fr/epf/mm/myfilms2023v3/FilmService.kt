@@ -1,11 +1,10 @@
 package fr.epf.mm.myfilms2023v3
 
-import fr.epf.mm.myfilms2023v3.model.Film
 import retrofit2.http.GET
 import retrofit2.http.Query
 import retrofit2.http.Url
 
-interface PopularFilmService {
+interface FilmService {
 
 //    @GET("/3/movie/popular?api_key=003dbf4d555d5ab3a9f692a799bf78bb")
 //    suspend fun getFilms() : GetPopularFilmsResult
@@ -16,6 +15,7 @@ interface PopularFilmService {
 data class GetFilmsResult(@Query("page") val page: Int,@Query("results") val results: List<Movie>)
 data class Movie(@Query("adult") val adult: Boolean,
                  @Query("backdrop_path") val backdrop_path: String,
+                 @Query("genre_ids") val genre_ids: List<Int>,
                  @Query("id") val id: Long,
                  @Query("original_language") val original_language: String,
                  @Query("original_title") val original_title: String,

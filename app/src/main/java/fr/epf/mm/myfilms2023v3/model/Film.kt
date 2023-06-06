@@ -12,7 +12,8 @@ data class Film (
     val title : String,
     val poster : String,
     val release : String,
-    val overview : String
+    val overview : String,
+    val genreID1 : Int
 
 ) : Parcelable
 
@@ -22,6 +23,10 @@ data class Film (
 //    @PrimaryKey val id : Long,
 //    val title : String,
 //    val poster : String,
-//    val release : String
+//    val release : String,
+//    val overview : String,
+//    val genreID1 : Int,
+//    val genreID2 : Int,
+//    val genreID3 : Int
 //
 //) : Parcelable

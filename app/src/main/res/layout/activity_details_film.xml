@@ -76,4 +76,12 @@
         app:layout_constraintTop_toBottomOf="@id/guideline_film_horizontal"
         app:layout_constraintVertical_bias="0.036"
         tools:text="@tools:sample/last_names" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/list_similary_film_recyclerview"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toBottomOf="@id/guideline_film_horizontal_basse"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -5,19 +5,27 @@ import android.graphics.Bitmap
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import fr.epf.mm.myfilms2023v3.model.Film
+import kotlinx.coroutines.runBlocking
+import retrofit2.Retrofit
+import retrofit2.converter.moshi.MoshiConverterFactory
 
 private const val PICTURE_REQUEST_CODE = 100
 
 class DetailsFilmActivity : AppCompatActivity() {
 
     lateinit var imageView: ImageView
+    lateinit var recyclerView: RecyclerView
+    val apiKey ="003dbf4d555d5ab3a9f692a799bf78bb"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,6 +43,12 @@ class DetailsFilmActivity : AppCompatActivity() {
 
         imageView = findViewById<ImageView>(R.id.details_film_imageview)
         film?.let { Glide.with(imageView).load(IMAGE_BASE + it.poster).into(imageView) }
+
+        recyclerView = findViewById(R.id.list_similary_film_recyclerview)
+        val layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        recyclerView.layoutManager = layoutManager
+
+        searchByUser()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -63,5 +77,40 @@ class DetailsFilmActivity : AppCompatActivity() {
             }
         }
         super.onActivityResult(requestCode, resultCode, result)
+    }
+
+    fun searchByUser() {
+        val film = intent.extras?.get("film") as? Film
+
+        val retrofitFilm = Retrofit.Builder()
+            .addConverterFactory(MoshiConverterFactory.create())
+            .baseUrl("https://api.themoviedb.org")
+            .build()
+
+        val service = retrofitFilm.create(FilmService::class.java)
+
+        runBlocking {
+            try {
+                //https://api.themoviedb.org/3/discover/movie?api_key=003dbf4d555d5ab3a9f692a799bf78bb&with_genres=28
+                val films = service.getFilm("/3/discover/movie?api_key=$apiKey&with_genres=${film?.genreID1}").results.map {
+                    Film(
+                        it.id,
+                        it.title,
+                        it.poster_path?:"",
+                        it.release_date,
+                        it.overview?:"",
+                        if (it.genre_ids.isNotEmpty()) it.genre_ids[0] else 28
+                    )
+                }
+                Log.d("Genres", "${film?.genreID1}")
+                Log.d("Genres", "$films")
+//                withContext(Dispatchers.IO) {
+//                    appDatabase.filmDao().insertAll(films)
+//                }
+                recyclerView.adapter = FilmAdapter(this@DetailsFilmActivity, films)
+            } catch (e: Exception) {
+                Log.d("ExceptionFilm", e.message!!)
+            }
+        }
     }
 }
