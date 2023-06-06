@@ -50,7 +50,7 @@ class ListFilmActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.action_add_film -> {
-                val intent = Intent(this, AddFilmActivity::class.java)
+                val intent = Intent(this, QRCodeScannerActivity::class.java)
                 startActivity(intent)
             }
             R.id.action_synchro_film -> {

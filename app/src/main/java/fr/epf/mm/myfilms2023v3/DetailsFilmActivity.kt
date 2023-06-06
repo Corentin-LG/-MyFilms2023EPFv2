@@ -36,19 +36,29 @@ class DetailsFilmActivity : AppCompatActivity() {
         val releaseTextView = findViewById<TextView>(R.id.details_film_release_textview)
         val overviewTextView = findViewById<TextView>(R.id.details_film_overview_textview)
 
-        val film = intent.extras?.get("film") as? Film
-        titleTextView.text = film?.title ?: "Non renseigné"
-        releaseTextView.text = film?.release ?: "Non renseigné"
-        overviewTextView.text = film?.overview?: "Non renseigné"
-
         imageView = findViewById<ImageView>(R.id.details_film_imageview)
-        film?.let { Glide.with(imageView).load(IMAGE_BASE + it.poster).into(imageView) }
-
         recyclerView = findViewById(R.id.list_similary_film_recyclerview)
         val layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         recyclerView.layoutManager = layoutManager
 
-        searchByUser()
+
+        val scannedUrl = intent?.getStringExtra("scanned_url")
+        Log.d("Erreurscan", "$scannedUrl")
+        val film = intent.extras?.get("film") as? Film
+        Log.d("Erreurscan", "$film")
+        if (scannedUrl != null) {
+            searchByUser(scannedUrl)
+        } else if (film != null) {
+            titleTextView.text = film?.title ?: "Non renseigné"
+            releaseTextView.text = film?.release ?: "Non renseigné"
+            overviewTextView.text = film?.overview?: "Non renseigné"
+
+            film?.let { Glide.with(imageView).load(IMAGE_BASE + it.poster).into(imageView) }
+
+            searchByUser()
+        } else {
+            Log.d("Erreurscan", "au secours")
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -104,6 +114,38 @@ class DetailsFilmActivity : AppCompatActivity() {
                 }
                 Log.d("Genres", "${film?.genreID1}")
                 Log.d("Genres", "$films")
+//                withContext(Dispatchers.IO) {
+//                    appDatabase.filmDao().insertAll(films)
+//                }
+                recyclerView.adapter = FilmAdapter(this@DetailsFilmActivity, films)
+            } catch (e: Exception) {
+                Log.d("ExceptionFilm", e.message!!)
+            }
+        }
+    }
+
+    fun searchByUser(query: String) {
+        val searchQuery = query
+
+        val retrofitFilm = Retrofit.Builder()
+            .addConverterFactory(MoshiConverterFactory.create())
+            .baseUrl("https://api.themoviedb.org")
+            .build()
+
+        val service = retrofitFilm.create(FilmService::class.java)
+
+        runBlocking {
+            try {
+                val films = service.getFilm("/3/search/movie?api_key=$apiKey&query=$searchQuery").results.map {
+                    Film(
+                        it.id,
+                        it.title,
+                        it.poster_path?:"",
+                        it.release_date,
+                        it.overview?:"",
+                        if (it.genre_ids.isNotEmpty()) it.genre_ids[0] else 0
+                    )
+                }
 //                withContext(Dispatchers.IO) {
 //                    appDatabase.filmDao().insertAll(films)
 //                }
