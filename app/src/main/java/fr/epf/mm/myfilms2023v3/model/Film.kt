@@ -11,7 +11,8 @@ data class Film (
     @PrimaryKey val id : Long,
     val title : String,
     val poster : String,
-    val overview : String,
+    val release : String,
+    val overview : String
 
 ) : Parcelable
 

@@ -79,15 +79,13 @@ class ListFilmActivity : AppCompatActivity() {
 
         runBlocking {
             try {
-                //val films = service.getFilms().results.map {
-                ///3/search/movie?query=star&include_adult=false&language=en-US&page=1"
-                ///3/search/movie?query=star"
                 val films = service.getFilm("/3/movie/popular?api_key=$apiKey").results.map {
                     Log.d("EPF", "$it")
                     Film(
                         it.id,
                         it.title,
                         it.poster_path?:"",
+                        it.release_date,
                         it.overview?:""
                     //si la classe change, il faut suppr l'appli soit trouver comment suppr a data base de la version atctuelle
                     //la migration n'a pas marché
@@ -95,9 +93,7 @@ class ListFilmActivity : AppCompatActivity() {
                 }
 //                withContext(Dispatchers.IO) {
 //                    appDatabase.filmDao().insertAll(films)
-//                    Log.d("ExceptionFilm", appDatabase.filmDao().findAllFilms().toString())
 //                }
-                //Log.d("ExceptionFilm", appDatabase.toString())
                 recyclerView.adapter = FilmAdapter(this@ListFilmActivity, films)
             } catch (e: Exception) {
                 Log.d("ExceptionFilm", e.message!!)
@@ -124,6 +120,7 @@ class ListFilmActivity : AppCompatActivity() {
                         it.id,
                         it.title,
                         it.poster_path?:"",
+                        it.release_date,
                         it.overview?:""
                     )
                 }
