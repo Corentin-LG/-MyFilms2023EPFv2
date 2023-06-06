@@ -7,24 +7,18 @@
     android:orientation="vertical"
     tools:context=".ListFilmActivity">
 
-
     <androidx.appcompat.widget.SearchView
         android:id="@+id/search_bar_searchview"
-        android:layout_width="410dp"
-        android:layout_height="49dp"
-        android:layout_margin="8dp"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
         app:queryHint="Tapper un nom de film..."
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="0dp" />
+        app:layout_constraintTop_toTopOf="parent"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/list_film_recyclerview"
-        android:layout_width="410dp"
-        android:layout_height="683dp"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/search_bar_searchview"
-        tools:layout_editor_absoluteX="0dp"
-        tools:ignore="MissingConstraints" />
+        app:layout_constraintTop_toBottomOf="@+id/search_bar_searchview" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
