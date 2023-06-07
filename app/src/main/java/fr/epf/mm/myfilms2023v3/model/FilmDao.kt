@@ -18,7 +18,7 @@ public interface FilmDao {
     @Query("SELECT * FROM films Where title Like :title")
     fun findFilmsByTitle(title: String): List<Film>
     @Query("SELECT * FROM films Where id = :id")
-    fun findFilmsById(id: Long): Long
+    fun findFilmsById(id: Long): Film
     @Query("SELECT * FROM films")
     fun findAllFilms(): List<Film>
     @RawQuery

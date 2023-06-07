@@ -62,13 +62,30 @@ class FilmAdapter(val context: Context, val films: List<Film>) : RecyclerView.Ad
             var appDatabase: FilmsDatabase
             appDatabase = AppDatabase.getInstance(context)
             val favFilmObject = films[position]
-            Log.d("FilmAdapt2", films[position].toString())
-            Log.d("FilmAdapt2", film.title)
+
+            var filmCherche: Film?
             runBlocking {
                 withContext(Dispatchers.IO) {
-                    appDatabase.filmDao().insert(films[position])
+                    filmCherche = appDatabase.filmDao().findFilmsById(favFilmObject.id)
                 }
             }
+            if (filmCherche == null) {
+                // le film est à ajouter
+                runBlocking {
+                    withContext(Dispatchers.IO) {
+                        appDatabase.filmDao().insert(films[position])
+                    }
+                }
+            } else {
+                runBlocking {
+                    withContext(Dispatchers.IO) {
+                        appDatabase.filmDao().delete(films[position])
+                    }
+                }
+            }
+
+
+
         }
 
     }
