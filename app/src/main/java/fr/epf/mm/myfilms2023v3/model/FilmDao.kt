@@ -5,7 +5,7 @@ import androidx.sqlite.db.SupportSQLiteQuery
 
 @Dao
 public interface FilmDao {
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(film: Film)
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAll(films: List<Film>)

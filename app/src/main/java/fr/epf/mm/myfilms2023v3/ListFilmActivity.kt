@@ -56,6 +56,10 @@ class ListFilmActivity : AppCompatActivity() {
             R.id.action_synchro_film -> {
                 synchro()
             }
+            R.id.action_fav_film -> {
+                val intent = Intent(this, FavFilmActivity::class.java)
+                startActivity(intent)
+            }
         }
         return super.onOptionsItemSelected(item)
     }
@@ -132,5 +136,9 @@ class ListFilmActivity : AppCompatActivity() {
 }
 
 fun View.click(action : (View) -> Unit){
+    this.setOnClickListener(action)
+}
+
+fun View.addFav(action : (View) -> Unit){
     this.setOnClickListener(action)
 }

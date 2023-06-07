@@ -12,9 +12,13 @@ import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import fr.epf.mm.myfilms2023v3.model.Film
 import com.bumptech.glide.Glide
+import fr.epf.mm.myfilms2023v3.model.AppDatabase
+import fr.epf.mm.myfilms2023v3.model.FilmsDatabase
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 
 class FilmViewHolder(view: View) : RecyclerView.ViewHolder(view)
-
 
 class FilmAdapter(val context: Context, val films: List<Film>) : RecyclerView.Adapter<FilmViewHolder>() {
 
@@ -43,10 +47,28 @@ class FilmAdapter(val context: Context, val films: List<Film>) : RecyclerView.Ad
 
         val cardView = view.findViewById<CardView>(R.id.view_film_cardview)
 
+        val favouriteButton = view.findViewById<ImageView>(R.id.favourite_film_imageview)
+
+        favouriteButton.setImageResource(R.drawable.baseline_favorite_border_24)
+
+
         cardView.click {
             val intent = Intent(context, DetailsFilmActivity::class.java)
             intent.putExtra("film", film)
             context.startActivity(intent)
+        }
+
+        favouriteButton.addFav {
+            var appDatabase: FilmsDatabase
+            appDatabase = AppDatabase.getInstance(context)
+            val favFilmObject = films[position]
+            Log.d("FilmAdapt2", films[position].toString())
+            Log.d("FilmAdapt2", film.title)
+            runBlocking {
+                withContext(Dispatchers.IO) {
+                    appDatabase.filmDao().insert(films[position])
+                }
+            }
         }
 
     }
