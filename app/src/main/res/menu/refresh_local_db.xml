@@ -3,8 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/action_add_picture_film"
-        android:icon="@drawable/baseline_add_a_photo_24"
-        android:title="Prendre un photo"
+        android:id="@+id/action_refresh_db"
+        android:icon="@drawable/baseline_refresh_24"
+        android:title="Synchro"
         app:showAsAction="ifRoom" />
+
 </menu>

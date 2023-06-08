@@ -5,8 +5,6 @@ import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
-import androidx.annotation.NonNull
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -17,6 +15,7 @@ import fr.epf.mm.myfilms2023v3.model.FilmsDatabase
 import kotlinx.coroutines.runBlocking
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
+import android.view.View
 
 class ListFilmActivity : AppCompatActivity() {
 
@@ -67,7 +66,7 @@ class ListFilmActivity : AppCompatActivity() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.list_films, menu)
+        menuInflater.inflate(R.menu.synchro_films, menu)
         return super.onCreateOptionsMenu(menu)
     }
 
@@ -143,6 +142,40 @@ class ListFilmActivity : AppCompatActivity() {
             }
         }
     }
+
+    override fun onResume() {
+        super.onResume()
+        InternetConnectivityChecker.checkInternetConnectivity(this)
+
+//        checkInternetConnectivity()
+    }
+//
+//    private fun checkInternetConnectivity() {
+//        val connectivityManager =
+//            getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+//        val activeNetworkInfo = connectivityManager.activeNetworkInfo
+//        val isConnected = activeNetworkInfo != null && activeNetworkInfo.isConnected
+//
+//        if (!isConnected) {
+//            showEnableInternetDialog()
+//        }
+//    }
+//
+//    private fun showEnableInternetDialog() {
+//        val dialogBuilder = AlertDialog.Builder(this)
+//        dialogBuilder.setTitle("Activer Internet")
+//            .setMessage("Pour utiliser cette application, veuillez activer votre connexion Internet.")
+//            .setPositiveButton("Données Mobiles") { dialog: DialogInterface, _: Int ->
+//                startActivity(Intent(Settings.ACTION_DATA_ROAMING_SETTINGS))
+//                dialog.dismiss()
+//            }
+//            .setNegativeButton("Wi-Fi") { dialog: DialogInterface, _: Int ->
+//                startActivity(Intent(Settings.ACTION_WIFI_SETTINGS))
+//                dialog.dismiss()
+//            }
+//            .setCancelable(false)
+//            .show()
+//    }
 }
 
 fun View.click(action: (View) -> Unit) {

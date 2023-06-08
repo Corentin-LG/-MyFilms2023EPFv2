@@ -1,11 +1,9 @@
 package fr.epf.mm.myfilms2023v3
 
-import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.Bitmap
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.provider.MediaStore
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
@@ -89,15 +87,14 @@ class DetailsFilmActivity : AppCompatActivity() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.details_film, menu)
+        menuInflater.inflate(R.menu.synchro_films, menu)
         return super.onCreateOptionsMenu(menu)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.action_add_picture_film -> {
-                val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-                startActivityForResult(intent, PICTURE_REQUEST_CODE)
+            R.id.action_synchro_film -> {
+                searchByUser()
             }
         }
         return super.onOptionsItemSelected(item)
@@ -177,4 +174,9 @@ class DetailsFilmActivity : AppCompatActivity() {
             }
         }
     }
+    override fun onResume() {
+        super.onResume()
+        InternetConnectivityChecker.checkInternetConnectivity(this)
+    }
+
 }

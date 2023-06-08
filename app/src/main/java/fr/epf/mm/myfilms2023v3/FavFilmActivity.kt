@@ -1,9 +1,10 @@
 package fr.epf.mm.myfilms2023v3
 
-import android.annotation.SuppressLint
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -18,23 +19,16 @@ class FavFilmActivity : AppCompatActivity() {
 
     lateinit var recyclerView: RecyclerView
     lateinit var appDatabase: FilmsDatabase
-    lateinit var searchView: androidx.appcompat.widget.SearchView
     lateinit var bottomNavigationView: BottomNavigationView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_fav_film)
 
-        val queryTextListener = MyQueryTextListener(this@FavFilmActivity)
-
         appDatabase = AppDatabase.getInstance(this)
 
         recyclerView = findViewById(R.id.list_film_recyclerview_fav_film)
         recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
-
-        searchView = findViewById(R.id.search_bar_searchview_fav_film)
-        searchView.clearFocus()
-        searchView.setOnQueryTextListener(queryTextListener)
 
         var favFilmsToDisplay = listOf<Film>()
         runBlocking {
@@ -65,5 +59,19 @@ class FavFilmActivity : AppCompatActivity() {
                 else -> false
             }
         }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.refresh_local_db, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.action_synchro_film -> {
+//                synchro()
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 }
