@@ -4,21 +4,19 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.view.SurfaceView
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import com.google.zxing.integration.android.IntentIntegrator
 import com.google.zxing.integration.android.IntentResult
-
 
 class QRCodeScannerActivity : Activity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // Initialiser le scanner
+        // Initialiser le scanner avec le thème personnalisé
         val integrator = IntentIntegrator(this)
         integrator.setOrientationLocked(true) // Verrouillez l'orientation en mode portrait
         integrator.setCaptureActivity(CustomCaptureActivity::class.java) // Utilisez CustomCaptureActivity
+        integrator.setPrompt("Faites face verticalement à un QR code ou à un Bar code bien net")
         integrator.initiateScan()
     }
 
