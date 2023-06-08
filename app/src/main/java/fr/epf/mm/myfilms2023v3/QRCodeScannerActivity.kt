@@ -17,7 +17,8 @@ class QRCodeScannerActivity : Activity() {
 
         // Initialiser le scanner
         val integrator = IntentIntegrator(this)
-        integrator.setOrientationLocked(false)
+        integrator.setOrientationLocked(true) // Verrouillez l'orientation en mode portrait
+        integrator.setCaptureActivity(CustomCaptureActivity::class.java) // Utilisez CustomCaptureActivity
         integrator.initiateScan()
     }
 
