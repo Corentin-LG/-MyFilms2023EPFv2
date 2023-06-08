@@ -89,14 +89,15 @@ class ListFilmActivity : AppCompatActivity() {
 
         runBlocking {
             try {
-                val films = service.getFilm("/3/movie/popular?api_key=$apiKey").results.map {
+                val films = service.getFilms("/3/movie/popular?api_key=$apiKey").results.map {
                     Film(
                         it.id,
                         it.title,
                         it.poster_path ?: "",
                         it.release_date,
                         it.overview ?: "",
-                        if (it.genre_ids.isNotEmpty()) it.genre_ids[0] else 0
+                        if (it.genre_ids.isNotEmpty()) it.genre_ids[0] else 28
+//                        if (it.genre_ids.isNotEmpty()) it.genre_ids[0] else 0
 
 //                        (it.genre_ids.get(0)?:"") as Int,
 //                        (it.genre_ids.get(1)?:"") as Int,
@@ -123,17 +124,25 @@ class ListFilmActivity : AppCompatActivity() {
 
         val service = retrofitFilm.create(FilmService::class.java)
 
+        val myList = mutableListOf<Pair<Long, String>>()
+        val longNumber:Long
+        longNumber = 28
+        val element = Pair(longNumber, "action")
+        myList.add(element)
+
         runBlocking {
             try {
                 val films =
-                    service.getFilm("/3/search/movie?api_key=$apiKey&query=$searchQuery").results.map {
+                    service.getFilms("/3/search/movie?api_key=$apiKey&query=$searchQuery").results.map {
                         Film(
                             it.id,
                             it.title,
                             it.poster_path ?: "",
                             it.release_date,
                             it.overview ?: "",
-                            if (it.genre_ids.isNotEmpty()) it.genre_ids[0] else 0
+                            if (it.genre_ids.isNotEmpty()) it.genre_ids[0] else myList[0].first
+                            //(if(it.genre_ids.isNotEmpty()) it.genre_ids.get(0) else myList.map { it.[0].first }) as Long
+                            //if(it.genre_ids.isNotEmpty()) it.genre_ids else myList.map { it.first }
                         )
                     }
                 recyclerView.adapter = FilmAdapter(this@ListFilmActivity, films)
@@ -142,40 +151,10 @@ class ListFilmActivity : AppCompatActivity() {
             }
         }
     }
-
     override fun onResume() {
         super.onResume()
         InternetConnectivityChecker.checkInternetConnectivity(this)
-
-//        checkInternetConnectivity()
     }
-//
-//    private fun checkInternetConnectivity() {
-//        val connectivityManager =
-//            getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-//        val activeNetworkInfo = connectivityManager.activeNetworkInfo
-//        val isConnected = activeNetworkInfo != null && activeNetworkInfo.isConnected
-//
-//        if (!isConnected) {
-//            showEnableInternetDialog()
-//        }
-//    }
-//
-//    private fun showEnableInternetDialog() {
-//        val dialogBuilder = AlertDialog.Builder(this)
-//        dialogBuilder.setTitle("Activer Internet")
-//            .setMessage("Pour utiliser cette application, veuillez activer votre connexion Internet.")
-//            .setPositiveButton("Données Mobiles") { dialog: DialogInterface, _: Int ->
-//                startActivity(Intent(Settings.ACTION_DATA_ROAMING_SETTINGS))
-//                dialog.dismiss()
-//            }
-//            .setNegativeButton("Wi-Fi") { dialog: DialogInterface, _: Int ->
-//                startActivity(Intent(Settings.ACTION_WIFI_SETTINGS))
-//                dialog.dismiss()
-//            }
-//            .setCancelable(false)
-//            .show()
-//    }
 }
 
 fun View.click(action: (View) -> Unit) {

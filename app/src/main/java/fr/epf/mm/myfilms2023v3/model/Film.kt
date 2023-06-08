@@ -13,9 +13,12 @@ data class Film(
     val poster: String,
     val release: String,
     val overview: String,
-    val genreID1: Int
+    val genreID1: Long
 
 ) : Parcelable
+
+
+//val genreID1: List<Long>
 
 //@Entity(tableName = "films")
 //@Parcelize

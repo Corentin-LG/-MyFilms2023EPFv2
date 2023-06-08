@@ -53,6 +53,19 @@ class DetailsFilmActivity : AppCompatActivity() {
 
         if (scannedUrl != null) {
             searchByUser(scannedUrl)
+            if (checkLongType(scannedUrl)) {
+
+            } else {
+                titleTextView.text = film?.title ?: "Non renseigné"
+                releaseTextView.text = ""
+                overviewTextView.text = "Voici le résultat de la recherche :"
+                imageView.setImageDrawable(
+                    resources.getDrawable(
+                        R.drawable.baseline_search_24,
+                        null
+                    )
+                )
+            }
         } else if (film != null) {
             titleTextView.text = film?.title ?: "Non renseigné"
             releaseTextView.text = film?.release ?: "Non renseigné"
@@ -66,7 +79,7 @@ class DetailsFilmActivity : AppCompatActivity() {
         }
 
         bottomNavigationView = findViewById(R.id.bottomNavigationView_details)
-        bottomNavigationView.setSelectedItemId(R.id.favourites_view)
+        bottomNavigationView.setSelectedItemId(R.id.home_view)
         bottomNavigationView.setOnNavigationItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.qrcode_view -> {
@@ -123,10 +136,16 @@ class DetailsFilmActivity : AppCompatActivity() {
 
         val service = retrofitFilm.create(FilmService::class.java)
 
+        val myList = mutableListOf<Pair<Long, String>>()
+        val longNumber:Long
+        longNumber = 28
+        val element = Pair(longNumber, "action")
+        myList.add(element)
+
         runBlocking {
             try {
                 val films =
-                    service.getFilm("/3/discover/movie?api_key=$apiKey&with_genres=${film?.genreID1}").results.map {
+                    service.getFilms("/3/discover/movie?api_key=$apiKey&with_genres=${film?.genreID1}").results.map {
                         Film(
                             it.id,
                             it.title,
@@ -134,6 +153,8 @@ class DetailsFilmActivity : AppCompatActivity() {
                             it.release_date,
                             it.overview ?: "",
                             if (it.genre_ids.isNotEmpty()) it.genre_ids[0] else 28
+                            //if(it.genre_ids.isNotEmpty()) it.genre_ids else myList.map { it.first }
+                            //if (it.genre_ids.isNotEmpty()) it.genre_ids[0] else 28
                         )
                     }
                 Log.d("Genres", "${film?.genreID1}")
@@ -155,28 +176,79 @@ class DetailsFilmActivity : AppCompatActivity() {
 
         val service = retrofitFilm.create(FilmService::class.java)
 
-        runBlocking {
-            try {
-                val films =
-                    service.getFilm("/3/search/movie?api_key=$apiKey&query=$searchQuery").results.map {
-                        Film(
-                            it.id,
-                            it.title,
-                            it.poster_path ?: "",
-                            it.release_date,
-                            it.overview ?: "",
-                            if (it.genre_ids.isNotEmpty()) it.genre_ids[0] else 0
-                        )
-                    }
-                recyclerView.adapter = FilmAdapter(this@DetailsFilmActivity, films)
-            } catch (e: Exception) {
-                Log.d("ExceptionFilm", e.message!!)
+        val urlQuery: String
+
+        val myList = mutableListOf<Pair<Long, String>>()
+        val longNumber:Long
+        longNumber = 28
+        val element = Pair(longNumber, "action")
+        myList.add(element)
+
+        if (checkLongType(searchQuery)) {
+            urlQuery = "/3/movie/$searchQuery?api_key=$apiKey"
+            Log.d("queryQRcode", "1:$urlQuery")
+
+            runBlocking {
+                try {
+                    val filmResultGetByID = service.getFilm(urlQuery)
+                    Log.d("queryQRcode", "1.1:$filmResultGetByID")
+                    val filmGetByID = Film(
+                        filmResultGetByID.id,
+                        filmResultGetByID.title,
+                        filmResultGetByID.poster_path?: "",
+                        filmResultGetByID.release_date,
+                        filmResultGetByID.overview?: "",
+                        if (filmResultGetByID.genres.isNotEmpty()) filmResultGetByID.genres[0].id else myList[0].first
+//                        if (filmResultGetByID.genres.id.isNotEmpty()) filmResultGetByID.genres.id[0] else myList[0].first
+//                        if (filmResultGetByID.genres.id.isNotEmpty()) filmResultGetByID.genres.id else myList.map { it.first }
+                    )
+                    Log.d("queryQRcode", "1.2:$filmGetByID")
+                    val film=mutableListOf<Film>()
+                    film.add(filmGetByID)
+                    Log.d("queryQRcode", "2:$film")
+                    recyclerView.adapter = FilmAdapter(this@DetailsFilmActivity, film)
+                } catch (e: Exception) {
+                    Log.d("ExceptionFilm", e.message!!)
+                    Log.d("queryQRcode", e.message!!)
+                }
+            }
+        } else {
+            urlQuery = "/3/search/movie?api_key=$apiKey&query=$searchQuery"
+            runBlocking {
+                try {
+                    val films =
+                        service.getFilms(urlQuery).results.map {
+                            Film(
+                                it.id,
+                                it.title,
+                                it.poster_path ?: "",
+                                it.release_date,
+                                it.overview ?: "",
+                                if (it.genre_ids.isNotEmpty()) it.genre_ids[0] else myList[0].first
+                                //if(it.genre_ids.isNotEmpty()) it.genre_ids else myList.map { it.first }
+                            )
+                        }
+                    recyclerView.adapter = FilmAdapter(this@DetailsFilmActivity, films)
+                } catch (e: Exception) {
+                    Log.d("ExceptionFilm", e.message!!)
+                }
             }
         }
+        Log.d("queryQRcode", "$urlQuery")
     }
+
     override fun onResume() {
         super.onResume()
         InternetConnectivityChecker.checkInternetConnectivity(this)
     }
 
+}
+
+fun checkLongType(variable: Any): Boolean {
+    return try {
+        variable.toString().toLong()
+        true
+    } catch (e: NumberFormatException) {
+        false
+    }
 }

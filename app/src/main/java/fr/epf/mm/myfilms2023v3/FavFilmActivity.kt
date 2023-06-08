@@ -69,7 +69,7 @@ class FavFilmActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.action_synchro_film -> {
-//                synchro()
+                this.recreate()
             }
         }
         return super.onOptionsItemSelected(item)
