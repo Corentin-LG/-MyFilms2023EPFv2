@@ -53,10 +53,15 @@ class DetailsFilmActivity : AppCompatActivity() {
 
         if (scannedUrl != null) {
             searchByUser(scannedUrl)
-            if (checkLongType(scannedUrl)) {
+//            if (checkLongType(scannedUrl)) {
+//                titleTextView.text = film?.title ?: "Non renseigné"
+//                releaseTextView.text = film?.release ?: "Non renseigné"
+//                overviewTextView.text = film?.overview ?: "Non renseigné"
+//
+//                film?.let { Glide.with(imageView).load(IMAGE_BASE + it.poster).into(imageView) }
+//            } else {
 
-            } else {
-                titleTextView.text = film?.title ?: "Non renseigné"
+                titleTextView.text = ""
                 releaseTextView.text = ""
                 overviewTextView.text = "Voici le résultat de la recherche :"
                 imageView.setImageDrawable(
@@ -65,7 +70,7 @@ class DetailsFilmActivity : AppCompatActivity() {
                         null
                     )
                 )
-            }
+//            }
         } else if (film != null) {
             titleTextView.text = film?.title ?: "Non renseigné"
             releaseTextView.text = film?.release ?: "Non renseigné"

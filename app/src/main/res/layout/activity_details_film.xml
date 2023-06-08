@@ -30,39 +30,39 @@
 
     <ImageView
         android:id="@+id/details_film_imageview"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
+        android:layout_width="160dp"
+        android:layout_height="160dp"
         android:scaleType="fitXY"
         app:layout_constraintBottom_toBottomOf="@id/guideline_film_horizontal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.051"
+        app:layout_constraintEnd_toEndOf="@id/guideline_film_vertical"
+        app:layout_constraintHorizontal_bias="0.551"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.4"
+        app:layout_constraintVertical_bias="0.484"
         tools:srcCompat="@tools:sample/avatars" />
 
     <TextView
         android:id="@+id/details_film_title_textview"
-        android:layout_width="41dp"
-        android:layout_height="20dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@id/details_film_release_textview"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.03"
         app:layout_constraintStart_toStartOf="@id/guideline_film_vertical"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.069"
+        app:layout_constraintVertical_bias="0.533"
         tools:text="@tools:sample/last_names" />
 
     <TextView
         android:id="@+id/details_film_release_textview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toBottomOf="@id/guideline_film_horizontal"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.034"
         app:layout_constraintStart_toStartOf="@id/guideline_film_vertical"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.116"
+        app:layout_constraintVertical_bias="0.371"
         tools:text="@tools:sample/last_names" />
 
     <TextView
@@ -81,7 +81,8 @@
         android:id="@+id/list_similary_film_recyclerview"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="@id/bottomNavigationView_details"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/bottomNavigationView_details"
         app:layout_constraintTop_toBottomOf="@id/guideline_film_horizontal_basse" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView

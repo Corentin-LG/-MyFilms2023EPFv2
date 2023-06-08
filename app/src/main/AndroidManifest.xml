@@ -21,15 +21,19 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".FavFilmActivity"
+            android:screenOrientation="portrait"
             android:exported="false" />
         <activity
             android:name=".QRCodeScannerActivity"
+            android:screenOrientation="portrait"
             android:exported="false" />
         <activity
             android:name=".DetailsFilmActivity"
+            android:screenOrientation="portrait"
             android:exported="false" />
         <activity
             android:name=".ListFilmActivity"
+            android:screenOrientation="portrait"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

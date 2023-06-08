@@ -3,6 +3,7 @@ package fr.epf.mm.myfilms2023v3
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -68,7 +69,7 @@ class FavFilmActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.action_synchro_film -> {
+            R.id.action_refresh_db -> {
                 this.recreate()
             }
         }
