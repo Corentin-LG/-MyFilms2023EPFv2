@@ -26,7 +26,8 @@ object InternetConnectivityChecker {
         dialogBuilder.setTitle("Activer Internet")
             .setMessage("Pour utiliser cette fonctionnalité, veuillez activer votre connexion Internet.")
             .setPositiveButton("Données Mobiles") { dialog: DialogInterface, _: Int ->
-                context.startActivity(Intent(Settings.ACTION_DATA_ROAMING_SETTINGS))
+                //context.startActivity(Intent(Settings.ACTION_DATA_ROAMING_SETTINGS)) //Ne permet pas sur Galaxy M32 d'être sur le bon paramètre
+                context.startActivity(Intent(Settings.ACTION_DATA_USAGE_SETTINGS))
                 dialog.dismiss()
             }
             .setNegativeButton("Wi-Fi") { dialog: DialogInterface, _: Int ->

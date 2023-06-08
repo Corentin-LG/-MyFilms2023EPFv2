@@ -12,10 +12,9 @@ class QRCodeScannerActivity : Activity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // Initialiser le scanner avec le thème personnalisé
         val integrator = IntentIntegrator(this)
-        integrator.setOrientationLocked(true) // Verrouillez l'orientation en mode portrait
-        integrator.setCaptureActivity(CustomCaptureActivity::class.java) // Utilisez CustomCaptureActivity
+        integrator.setOrientationLocked(true)
+        integrator.setCaptureActivity(CustomCaptureActivity::class.java)
         integrator.setPrompt("Faites face verticalement à un QR code ou à un Bar code bien net")
         integrator.initiateScan()
     }
@@ -23,19 +22,16 @@ class QRCodeScannerActivity : Activity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        // Récupérer les résultats du scanner
         val result: IntentResult? =
             IntentIntegrator.parseActivityResult(requestCode, resultCode, data)
         if (result != null) {
             if (result.contents != null) {
                 val scannedData = result.contents
                 Log.d("Erreurscan", "$scannedData")
-                // Faites quelque chose avec les données scannées (par exemple, les transmettre à une autre activité)
                 val intent = Intent(this, DetailsFilmActivity::class.java)
                 intent.putExtra("scannedData", scannedData)
                 startActivity(intent)
             } else {
-                // Aucune donnée scannée
                 Toast.makeText(this, "Scan annulé", Toast.LENGTH_SHORT).show()
                 finish()
             }

@@ -103,7 +103,7 @@ class ListFilmActivity : AppCompatActivity() {
 //                        (it.genre_ids.get(1)?:"") as Int,
 //                        (it.genre_ids.get(2)?:"") as Int
 
-                        //si la classe change, il faut suppr l'appli soit trouver comment suppr a data base de la version atctuelle
+                        //si la classe change, il faut suppr l'appli soit trouver comment suppr a data base de la version actuelle
                         //la migration n'a pas marché
                     )
                 }
