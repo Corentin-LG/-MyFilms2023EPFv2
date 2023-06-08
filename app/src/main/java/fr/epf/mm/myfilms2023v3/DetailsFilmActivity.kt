@@ -1,5 +1,6 @@
 package fr.epf.mm.myfilms2023v3
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.Bitmap
 import androidx.appcompat.app.AppCompatActivity
@@ -14,6 +15,7 @@ import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import fr.epf.mm.myfilms2023v3.model.Film
 import kotlinx.coroutines.runBlocking
 import retrofit2.Retrofit
@@ -26,6 +28,7 @@ class DetailsFilmActivity : AppCompatActivity() {
     lateinit var imageView: ImageView
     lateinit var recyclerView: RecyclerView
     val apiKey ="003dbf4d555d5ab3a9f692a799bf78bb"
+    lateinit var bottomNavigationView: BottomNavigationView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -58,6 +61,26 @@ class DetailsFilmActivity : AppCompatActivity() {
             searchByUser()
         } else {
             Log.d("Erreurscan", "au secours")
+        }
+
+        bottomNavigationView = findViewById(R.id.bottomNavigationView_details)
+        bottomNavigationView.setSelectedItemId(R.id.favourites_view)
+        bottomNavigationView.setOnNavigationItemSelectedListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.qrcode_view -> {
+                    startActivity(Intent(this, QRCodeScannerActivity::class.java))
+                    true
+                }
+                R.id.home_view -> {
+                    startActivity(Intent(this, ListFilmActivity::class.java))
+                    true
+                }
+                R.id.favourites_view -> {
+                    startActivity(Intent(this, FavFilmActivity::class.java))
+                    true
+                }
+                else -> false
+            }
         }
     }
 

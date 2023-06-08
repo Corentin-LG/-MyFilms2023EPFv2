@@ -6,9 +6,11 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import androidx.annotation.NonNull
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import fr.epf.mm.myfilms2023v3.model.AppDatabase
 import fr.epf.mm.myfilms2023v3.model.Film
 import fr.epf.mm.myfilms2023v3.model.FilmsDatabase
@@ -22,6 +24,7 @@ class ListFilmActivity : AppCompatActivity() {
     lateinit var appDatabase: FilmsDatabase
     lateinit var searchView: androidx.appcompat.widget.SearchView
     val apiKey ="003dbf4d555d5ab3a9f692a799bf78bb"
+    lateinit var bottomNavigationView: BottomNavigationView
 
     private var searchQuery: String = ""
 
@@ -40,7 +43,27 @@ class ListFilmActivity : AppCompatActivity() {
         searchView.setOnQueryTextListener(queryTextListener)
 
         synchro()
-    }
+        bottomNavigationView = findViewById(R.id.bottomNavigationView_list)
+        bottomNavigationView.setSelectedItemId(R.id.home_view)
+        bottomNavigationView.setOnNavigationItemSelectedListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.qrcode_view -> {
+                    startActivity(Intent(this, QRCodeScannerActivity::class.java))
+                    true
+                }
+                R.id.home_view -> {
+                    startActivity(Intent(this, ListFilmActivity::class.java))
+                    true
+                }
+                R.id.favourites_view -> {
+                    startActivity(Intent(this, FavFilmActivity::class.java))
+                    true
+                }
+                else -> false
+            }
+        }
+
+        }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.list_films, menu)
@@ -60,6 +83,18 @@ class ListFilmActivity : AppCompatActivity() {
                 val intent = Intent(this, FavFilmActivity::class.java)
                 startActivity(intent)
             }
+//            R.id.qrcode_view -> {
+//                val intent = Intent(this, QRCodeScannerActivity::class.java)
+//                startActivity(intent)
+//            }
+//            R.id.home_view -> {
+//                val intent = Intent(this, ListFilmActivity::class.java)
+//                startActivity(intent)
+//            }
+//            R.id.favourites_view -> {
+//                val intent = Intent(this, FavFilmActivity::class.java)
+//                startActivity(intent)
+//            }
         }
         return super.onOptionsItemSelected(item)
     }
