@@ -38,6 +38,8 @@ class DetailsFilmActivity : AppCompatActivity() {
         val titleTextView = findViewById<TextView>(R.id.details_film_title_textview)
         val releaseTextView = findViewById<TextView>(R.id.details_film_release_textview)
         val overviewTextView = findViewById<TextView>(R.id.details_film_overview_textview)
+        val averageTextView = findViewById<TextView>(R.id.details_film_vote_average_textview)
+        val languageTextView = findViewById<TextView>(R.id.details_film_original_language_textview)
 
         val layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
 
@@ -61,20 +63,39 @@ class DetailsFilmActivity : AppCompatActivity() {
 //                film?.let { Glide.with(imageView).load(IMAGE_BASE + it.poster).into(imageView) }
 //            } else {
 
-                titleTextView.text = ""
-                releaseTextView.text = ""
-                overviewTextView.text = "Voici le résultat de la recherche :"
-                imageView.setImageDrawable(
-                    resources.getDrawable(
-                        R.drawable.baseline_search_24,
-                        null
-                    )
+            titleTextView.text = ""
+            releaseTextView.text = ""
+            overviewTextView.text = "Voici le résultat de la recherche :"
+            averageTextView.text = ""
+            languageTextView.text = ""
+            imageView.setImageDrawable(
+                resources.getDrawable(
+                    R.drawable.baseline_search_24,
+                    null
                 )
+            )
 //            }
         } else if (film != null) {
             titleTextView.text = film?.title ?: "Non renseigné"
             releaseTextView.text = film?.release ?: "Non renseigné"
             overviewTextView.text = film?.overview ?: "Non renseigné"
+            val voteAverage = film?.vote_average
+            if (voteAverage != null) {
+                val formattedVoteAverage = "$voteAverage/10"
+                averageTextView.text = formattedVoteAverage
+            } else {
+                averageTextView.text = "Non renseigné"
+            }
+            val originalLanguage = film?.original_language
+
+            if (originalLanguage != null) {
+                val formattedLanguage = "Langage : ${originalLanguage}."
+                languageTextView.text = formattedLanguage
+            } else {
+                languageTextView.text = "Non renseigné"
+            }
+//            averageTextView.text = film?.vote_average.toString() ?: "Non renseigné"
+//            languageTextView.text = film?.original_language ?: "Non renseigné"
 
             film?.let { Glide.with(imageView).load(IMAGE_BASE + it.poster).into(imageView) }
 
@@ -142,7 +163,7 @@ class DetailsFilmActivity : AppCompatActivity() {
         val service = retrofitFilm.create(FilmService::class.java)
 
         val myList = mutableListOf<Pair<Long, String>>()
-        val longNumber:Long
+        val longNumber: Long
         longNumber = 28
         val element = Pair(longNumber, "action")
         myList.add(element)
@@ -157,6 +178,8 @@ class DetailsFilmActivity : AppCompatActivity() {
                             it.poster_path ?: "",
                             it.release_date,
                             it.overview ?: "",
+                            (it.vote_average ?: "") as Float,
+                            it.original_language ?: "",
                             if (it.genre_ids.isNotEmpty()) it.genre_ids[0] else 28
                             //if(it.genre_ids.isNotEmpty()) it.genre_ids else myList.map { it.first }
                             //if (it.genre_ids.isNotEmpty()) it.genre_ids[0] else 28
@@ -184,7 +207,7 @@ class DetailsFilmActivity : AppCompatActivity() {
         val urlQuery: String
 
         val myList = mutableListOf<Pair<Long, String>>()
-        val longNumber:Long
+        val longNumber: Long
         longNumber = 28
         val element = Pair(longNumber, "action")
         myList.add(element)
@@ -200,15 +223,17 @@ class DetailsFilmActivity : AppCompatActivity() {
                     val filmGetByID = Film(
                         filmResultGetByID.id,
                         filmResultGetByID.title,
-                        filmResultGetByID.poster_path?: "",
+                        filmResultGetByID.poster_path ?: "",
                         filmResultGetByID.release_date,
-                        filmResultGetByID.overview?: "",
+                        filmResultGetByID.overview ?: "",
+                        (filmResultGetByID.vote_average ?: "") as Float,
+                        filmResultGetByID.original_language ?: "",
                         if (filmResultGetByID.genres.isNotEmpty()) filmResultGetByID.genres[0].id else myList[0].first
 //                        if (filmResultGetByID.genres.id.isNotEmpty()) filmResultGetByID.genres.id[0] else myList[0].first
 //                        if (filmResultGetByID.genres.id.isNotEmpty()) filmResultGetByID.genres.id else myList.map { it.first }
                     )
                     Log.d("queryQRcode", "1.2:$filmGetByID")
-                    val film=mutableListOf<Film>()
+                    val film = mutableListOf<Film>()
                     film.add(filmGetByID)
                     Log.d("queryQRcode", "2:$film")
                     recyclerView.adapter = FilmAdapter(this@DetailsFilmActivity, film)
@@ -229,6 +254,8 @@ class DetailsFilmActivity : AppCompatActivity() {
                                 it.poster_path ?: "",
                                 it.release_date,
                                 it.overview ?: "",
+                                (it.vote_average ?: "") as Float,
+                                it.original_language ?: "",
                                 if (it.genre_ids.isNotEmpty()) it.genre_ids[0] else myList[0].first
                                 //if(it.genre_ids.isNotEmpty()) it.genre_ids else myList.map { it.first }
                             )

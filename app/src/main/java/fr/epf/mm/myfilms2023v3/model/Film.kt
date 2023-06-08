@@ -13,6 +13,8 @@ data class Film(
     val poster: String,
     val release: String,
     val overview: String,
+    val vote_average: Float,
+    val original_language: String,
     val genreID1: Long
 
 ) : Parcelable

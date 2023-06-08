@@ -96,6 +96,8 @@ class ListFilmActivity : AppCompatActivity() {
                         it.poster_path ?: "",
                         it.release_date,
                         it.overview ?: "",
+                        (it.vote_average?:"") as Float,
+                        it.original_language?:"",
                         if (it.genre_ids.isNotEmpty()) it.genre_ids[0] else 28
 //                        if (it.genre_ids.isNotEmpty()) it.genre_ids[0] else 0
 
@@ -140,6 +142,8 @@ class ListFilmActivity : AppCompatActivity() {
                             it.poster_path ?: "",
                             it.release_date,
                             it.overview ?: "",
+                            (it.vote_average?:"") as Float,
+                            it.original_language?:"",
                             if (it.genre_ids.isNotEmpty()) it.genre_ids[0] else myList[0].first
                             //(if(it.genre_ids.isNotEmpty()) it.genre_ids.get(0) else myList.map { it.[0].first }) as Long
                             //if(it.genre_ids.isNotEmpty()) it.genre_ids else myList.map { it.first }
