@@ -25,38 +25,40 @@ private const val PICTURE_REQUEST_CODE = 100
 
 class DetailsFilmActivity : AppCompatActivity() {
 
+    val apiKey = "003dbf4d555d5ab3a9f692a799bf78bb"
+
     lateinit var imageView: ImageView
     lateinit var recyclerView: RecyclerView
-    val apiKey ="003dbf4d555d5ab3a9f692a799bf78bb"
     lateinit var bottomNavigationView: BottomNavigationView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_details_film)
+
         val IMAGE_BASE = "https://image.tmdb.org/t/p/w500/"
 
         val titleTextView = findViewById<TextView>(R.id.details_film_title_textview)
         val releaseTextView = findViewById<TextView>(R.id.details_film_release_textview)
         val overviewTextView = findViewById<TextView>(R.id.details_film_overview_textview)
 
+        val layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+
         imageView = findViewById<ImageView>(R.id.details_film_imageview)
         recyclerView = findViewById(R.id.list_similary_film_recyclerview)
-        val layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         recyclerView.layoutManager = layoutManager
 
 
-        val scannedUrl = intent?.getStringExtra("scanned_url")
-        val scannedUrl2 = intent?.getStringExtra("scannedData")
+        val scannedUrl = intent?.getStringExtra("scannedData")
         Log.d("Erreurscan", "$scannedUrl")
-        Log.d("Erreurscan", "$scannedUrl2")
         val film = intent.extras?.get("film") as? Film
         Log.d("Erreurscan", "$film")
-        if (scannedUrl2 != null) {
-            searchByUser(scannedUrl2)
+
+        if (scannedUrl != null) {
+            searchByUser(scannedUrl)
         } else if (film != null) {
             titleTextView.text = film?.title ?: "Non renseigné"
             releaseTextView.text = film?.release ?: "Non renseigné"
-            overviewTextView.text = film?.overview?: "Non renseigné"
+            overviewTextView.text = film?.overview ?: "Non renseigné"
 
             film?.let { Glide.with(imageView).load(IMAGE_BASE + it.poster).into(imageView) }
 
@@ -126,22 +128,19 @@ class DetailsFilmActivity : AppCompatActivity() {
 
         runBlocking {
             try {
-                //https://api.themoviedb.org/3/discover/movie?api_key=003dbf4d555d5ab3a9f692a799bf78bb&with_genres=28
-                val films = service.getFilm("/3/discover/movie?api_key=$apiKey&with_genres=${film?.genreID1}").results.map {
-                    Film(
-                        it.id,
-                        it.title,
-                        it.poster_path?:"",
-                        it.release_date,
-                        it.overview?:"",
-                        if (it.genre_ids.isNotEmpty()) it.genre_ids[0] else 28
-                    )
-                }
+                val films =
+                    service.getFilm("/3/discover/movie?api_key=$apiKey&with_genres=${film?.genreID1}").results.map {
+                        Film(
+                            it.id,
+                            it.title,
+                            it.poster_path ?: "",
+                            it.release_date,
+                            it.overview ?: "",
+                            if (it.genre_ids.isNotEmpty()) it.genre_ids[0] else 28
+                        )
+                    }
                 Log.d("Genres", "${film?.genreID1}")
                 Log.d("Genres", "$films")
-//                withContext(Dispatchers.IO) {
-//                    appDatabase.filmDao().insertAll(films)
-//                }
                 recyclerView.adapter = FilmAdapter(this@DetailsFilmActivity, films)
             } catch (e: Exception) {
                 Log.d("ExceptionFilm", e.message!!)
@@ -161,19 +160,17 @@ class DetailsFilmActivity : AppCompatActivity() {
 
         runBlocking {
             try {
-                val films = service.getFilm("/3/search/movie?api_key=$apiKey&query=$searchQuery").results.map {
-                    Film(
-                        it.id,
-                        it.title,
-                        it.poster_path?:"",
-                        it.release_date,
-                        it.overview?:"",
-                        if (it.genre_ids.isNotEmpty()) it.genre_ids[0] else 0
-                    )
-                }
-//                withContext(Dispatchers.IO) {
-//                    appDatabase.filmDao().insertAll(films)
-//                }
+                val films =
+                    service.getFilm("/3/search/movie?api_key=$apiKey&query=$searchQuery").results.map {
+                        Film(
+                            it.id,
+                            it.title,
+                            it.poster_path ?: "",
+                            it.release_date,
+                            it.overview ?: "",
+                            if (it.genre_ids.isNotEmpty()) it.genre_ids[0] else 0
+                        )
+                    }
                 recyclerView.adapter = FilmAdapter(this@DetailsFilmActivity, films)
             } catch (e: Exception) {
                 Log.d("ExceptionFilm", e.message!!)

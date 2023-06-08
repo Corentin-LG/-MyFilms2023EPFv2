@@ -20,13 +20,14 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 
 class ListFilmActivity : AppCompatActivity() {
 
-    lateinit var recyclerView: RecyclerView
-    lateinit var appDatabase: FilmsDatabase
-    lateinit var searchView: androidx.appcompat.widget.SearchView
-    val apiKey ="003dbf4d555d5ab3a9f692a799bf78bb"
-    lateinit var bottomNavigationView: BottomNavigationView
-
+    val apiKey = "003dbf4d555d5ab3a9f692a799bf78bb"
     private var searchQuery: String = ""
+
+    lateinit var appDatabase: FilmsDatabase
+
+    lateinit var recyclerView: RecyclerView
+    lateinit var searchView: androidx.appcompat.widget.SearchView
+    lateinit var bottomNavigationView: BottomNavigationView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,15 +35,15 @@ class ListFilmActivity : AppCompatActivity() {
 
         recyclerView = findViewById(R.id.list_film_recyclerview)
         recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
-        appDatabase = AppDatabase.getInstance(this)
 
+        val queryTextListener = MyQueryTextListener(this@ListFilmActivity)
         searchView = findViewById(R.id.search_bar_searchview)
         searchView.clearFocus()
-        //val queryTextListener = MyQueryTextListener(this)
-        val queryTextListener = MyQueryTextListener(this@ListFilmActivity)
         searchView.setOnQueryTextListener(queryTextListener)
 
+        appDatabase = AppDatabase.getInstance(this)
         synchro()
+
         bottomNavigationView = findViewById(R.id.bottomNavigationView_list)
         bottomNavigationView.setSelectedItemId(R.id.home_view)
         bottomNavigationView.setOnNavigationItemSelectedListener { menuItem ->
@@ -63,7 +64,7 @@ class ListFilmActivity : AppCompatActivity() {
             }
         }
 
-        }
+    }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.list_films, menu)
@@ -72,29 +73,9 @@ class ListFilmActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.action_add_film -> {
-                val intent = Intent(this, QRCodeScannerActivity::class.java)
-                startActivity(intent)
-            }
             R.id.action_synchro_film -> {
                 synchro()
             }
-            R.id.action_fav_film -> {
-                val intent = Intent(this, FavFilmActivity::class.java)
-                startActivity(intent)
-            }
-//            R.id.qrcode_view -> {
-//                val intent = Intent(this, QRCodeScannerActivity::class.java)
-//                startActivity(intent)
-//            }
-//            R.id.home_view -> {
-//                val intent = Intent(this, ListFilmActivity::class.java)
-//                startActivity(intent)
-//            }
-//            R.id.favourites_view -> {
-//                val intent = Intent(this, FavFilmActivity::class.java)
-//                startActivity(intent)
-//            }
         }
         return super.onOptionsItemSelected(item)
     }
@@ -113,22 +94,19 @@ class ListFilmActivity : AppCompatActivity() {
                     Film(
                         it.id,
                         it.title,
-                        it.poster_path?:"",
+                        it.poster_path ?: "",
                         it.release_date,
-                        it.overview?:"",
+                        it.overview ?: "",
                         if (it.genre_ids.isNotEmpty()) it.genre_ids[0] else 0
 
 //                        (it.genre_ids.get(0)?:"") as Int,
 //                        (it.genre_ids.get(1)?:"") as Int,
 //                        (it.genre_ids.get(2)?:"") as Int
 
-                    //si la classe change, il faut suppr l'appli soit trouver comment suppr a data base de la version atctuelle
-                    //la migration n'a pas marché
+                        //si la classe change, il faut suppr l'appli soit trouver comment suppr a data base de la version atctuelle
+                        //la migration n'a pas marché
                     )
                 }
-//                withContext(Dispatchers.IO) {
-//                    appDatabase.filmDao().insertAll(films)
-//                }
                 recyclerView.adapter = FilmAdapter(this@ListFilmActivity, films)
             } catch (e: Exception) {
                 Log.d("ExceptionFilm", e.message!!)
@@ -148,20 +126,17 @@ class ListFilmActivity : AppCompatActivity() {
 
         runBlocking {
             try {
-                //https://api.themoviedb.org/3/search/movie?api_key=003dbf4d555d5ab3a9f692a799bf78bb&query=star
-                val films = service.getFilm("/3/search/movie?api_key=$apiKey&query=$searchQuery").results.map {
-                    Film(
-                        it.id,
-                        it.title,
-                        it.poster_path?:"",
-                        it.release_date,
-                        it.overview?:"",
-                        if (it.genre_ids.isNotEmpty()) it.genre_ids[0] else 0
-                    )
-                }
-//                withContext(Dispatchers.IO) {
-//                    appDatabase.filmDao().insertAll(films)
-//                }
+                val films =
+                    service.getFilm("/3/search/movie?api_key=$apiKey&query=$searchQuery").results.map {
+                        Film(
+                            it.id,
+                            it.title,
+                            it.poster_path ?: "",
+                            it.release_date,
+                            it.overview ?: "",
+                            if (it.genre_ids.isNotEmpty()) it.genre_ids[0] else 0
+                        )
+                    }
                 recyclerView.adapter = FilmAdapter(this@ListFilmActivity, films)
             } catch (e: Exception) {
                 Log.d("ExceptionFilm", e.message!!)
@@ -170,10 +145,10 @@ class ListFilmActivity : AppCompatActivity() {
     }
 }
 
-fun View.click(action : (View) -> Unit){
+fun View.click(action: (View) -> Unit) {
     this.setOnClickListener(action)
 }
 
-fun View.addFav(action : (View) -> Unit){
+fun View.addFav(action: (View) -> Unit) {
     this.setOnClickListener(action)
 }

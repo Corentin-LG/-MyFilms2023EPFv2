@@ -24,9 +24,6 @@
             android:name=".DetailsFilmActivity"
             android:exported="false" />
         <activity
-            android:name=".AddFilmActivity"
-            android:exported="false" />
-        <activity
             android:name=".ListFilmActivity"
             android:exported="true">
             <intent-filter>

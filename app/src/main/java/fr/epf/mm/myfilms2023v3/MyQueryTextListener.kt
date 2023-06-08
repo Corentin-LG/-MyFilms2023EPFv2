@@ -5,7 +5,8 @@ import androidx.appcompat.widget.SearchView
 import android.text.Editable
 import android.text.TextWatcher
 
-class MyQueryTextListener (private val activity: Activity): SearchView.OnQueryTextListener, TextWatcher {
+class MyQueryTextListener(private val activity: Activity) : SearchView.OnQueryTextListener,
+    TextWatcher {
     override fun onQueryTextSubmit(query: String): Boolean {
         (activity as ListFilmActivity).searchByUser(query)
         return true

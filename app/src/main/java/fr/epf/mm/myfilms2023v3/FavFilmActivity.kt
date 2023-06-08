@@ -15,6 +15,7 @@ import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 
 class FavFilmActivity : AppCompatActivity() {
+
     lateinit var recyclerView: RecyclerView
     lateinit var appDatabase: FilmsDatabase
     lateinit var searchView: androidx.appcompat.widget.SearchView
@@ -24,14 +25,15 @@ class FavFilmActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_fav_film)
 
+        val queryTextListener = MyQueryTextListener(this@FavFilmActivity)
+
+        appDatabase = AppDatabase.getInstance(this)
+
         recyclerView = findViewById(R.id.list_film_recyclerview_fav_film)
         recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
-        appDatabase = AppDatabase.getInstance(this)
 
         searchView = findViewById(R.id.search_bar_searchview_fav_film)
         searchView.clearFocus()
-        //val queryTextListener = MyQueryTextListener(this)
-        val queryTextListener = MyQueryTextListener(this@FavFilmActivity)
         searchView.setOnQueryTextListener(queryTextListener)
 
         var favFilmsToDisplay = listOf<Film>()
@@ -40,6 +42,7 @@ class FavFilmActivity : AppCompatActivity() {
                 favFilmsToDisplay = appDatabase.filmDao().findAllFilms()
             }
         }
+
         recyclerView.adapter =
             FilmAdapter(this@FavFilmActivity, favFilmsToDisplay)
 

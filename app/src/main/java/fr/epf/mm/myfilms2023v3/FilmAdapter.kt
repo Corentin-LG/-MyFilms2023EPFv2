@@ -20,7 +20,9 @@ import kotlinx.coroutines.withContext
 
 class FilmViewHolder(view: View) : RecyclerView.ViewHolder(view)
 
-class FilmAdapter(val context: Context, val films: List<Film>) : RecyclerView.Adapter<FilmViewHolder>() {
+class FilmAdapter(val context: Context, val films: List<Film>) :
+
+    RecyclerView.Adapter<FilmViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FilmViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
@@ -32,25 +34,22 @@ class FilmAdapter(val context: Context, val films: List<Film>) : RecyclerView.Ad
     override fun getItemCount() = films.size
 
     override fun onBindViewHolder(holder: FilmViewHolder, position: Int) {
+
         val IMAGE_BASE = "https://image.tmdb.org/t/p/w500/"
 
         val film = films[position]
         val view = holder.itemView
         val textView = view.findViewById<TextView>(R.id.view_film_textview)
         Log.d("FilmAdapt", film.title)
-        textView.text = "${film.id} ${film.title}"
-        //textView.text = "${film.id} ${film.title} ${film.release}"
+        textView.text = "${film.id} ${film.title} ${film.release}"
 
         val imageView = view.findViewById<ImageView>(R.id.view_film_imageview)
+        val cardView = view.findViewById<CardView>(R.id.view_film_cardview)
+        val favouriteButton = view.findViewById<ImageView>(R.id.favourite_film_imageview)
 
         Glide.with(imageView).load(IMAGE_BASE + film.poster).into(imageView)
 
-        val cardView = view.findViewById<CardView>(R.id.view_film_cardview)
-
-        val favouriteButton = view.findViewById<ImageView>(R.id.favourite_film_imageview)
-
         favouriteButton.setImageResource(R.drawable.baseline_favorite_border_24)
-
 
         cardView.click {
             val intent = Intent(context, DetailsFilmActivity::class.java)
@@ -83,11 +82,6 @@ class FilmAdapter(val context: Context, val films: List<Film>) : RecyclerView.Ad
                     }
                 }
             }
-
-
-
         }
-
     }
-
 }

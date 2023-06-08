@@ -25,7 +25,8 @@ class QRCodeScannerActivity : Activity() {
         super.onActivityResult(requestCode, resultCode, data)
 
         // Récupérer les résultats du scanner
-        val result: IntentResult? = IntentIntegrator.parseActivityResult(requestCode, resultCode, data)
+        val result: IntentResult? =
+            IntentIntegrator.parseActivityResult(requestCode, resultCode, data)
         if (result != null) {
             if (result.contents != null) {
                 val scannedData = result.contents

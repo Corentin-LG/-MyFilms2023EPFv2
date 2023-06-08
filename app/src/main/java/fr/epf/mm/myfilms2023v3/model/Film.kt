@@ -7,13 +7,13 @@ import kotlinx.android.parcel.Parcelize
 
 @Entity(tableName = "films")
 @Parcelize
-data class Film (
-    @PrimaryKey val id : Long,
-    val title : String,
-    val poster : String,
-    val release : String,
-    val overview : String,
-    val genreID1 : Int
+data class Film(
+    @PrimaryKey val id: Long,
+    val title: String,
+    val poster: String,
+    val release: String,
+    val overview: String,
+    val genreID1: Int
 
 ) : Parcelable
 

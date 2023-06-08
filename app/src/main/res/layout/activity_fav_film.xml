@@ -11,8 +11,8 @@
         android:id="@+id/search_bar_searchview_fav_film"
         android:layout_width="match_parent"
         android:layout_height="40dp"
-        app:queryHint="Tapper un nom de film..."
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent"
+        app:queryHint="Tapper un nom de film..." />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/list_film_recyclerview_fav_film"
@@ -29,7 +29,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:menu="@menu/bottom_nav_menu"
-        />
+        app:menu="@menu/bottom_nav_menu" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
