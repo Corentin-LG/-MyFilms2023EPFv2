@@ -57,7 +57,7 @@ class FilmAdapter(val context: Context, val films: List<Film>) :
         } else {
             formattedLanguage = ""
         }
-        textView.text = "${film.title} \n ${film.release} $voteAverage $formattedLanguage"
+        textView.text = "${film.title} \n ${film.release} $formattedVoteAverage $formattedLanguage"
 
         val imageView = view.findViewById<ImageView>(R.id.view_film_imageview)
         val cardView = view.findViewById<CardView>(R.id.view_film_cardview)
