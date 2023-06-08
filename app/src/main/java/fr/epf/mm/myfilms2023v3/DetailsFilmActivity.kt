@@ -46,11 +46,13 @@ class DetailsFilmActivity : AppCompatActivity() {
 
 
         val scannedUrl = intent?.getStringExtra("scanned_url")
+        val scannedUrl2 = intent?.getStringExtra("scannedData")
         Log.d("Erreurscan", "$scannedUrl")
+        Log.d("Erreurscan", "$scannedUrl2")
         val film = intent.extras?.get("film") as? Film
         Log.d("Erreurscan", "$film")
-        if (scannedUrl != null) {
-            searchByUser(scannedUrl)
+        if (scannedUrl2 != null) {
+            searchByUser(scannedUrl2)
         } else if (film != null) {
             titleTextView.text = film?.title ?: "Non renseigné"
             releaseTextView.text = film?.release ?: "Non renseigné"
