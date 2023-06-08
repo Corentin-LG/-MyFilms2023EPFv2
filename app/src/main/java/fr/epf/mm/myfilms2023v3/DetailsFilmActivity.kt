@@ -14,8 +14,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import fr.epf.mm.myfilms2023v3.model.AppDatabase
 import fr.epf.mm.myfilms2023v3.model.Film
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 
@@ -28,6 +31,7 @@ class DetailsFilmActivity : AppCompatActivity() {
     lateinit var imageView: ImageView
     lateinit var recyclerView: RecyclerView
     lateinit var bottomNavigationView: BottomNavigationView
+    lateinit var favImageView: ImageView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,6 +44,8 @@ class DetailsFilmActivity : AppCompatActivity() {
         val overviewTextView = findViewById<TextView>(R.id.details_film_overview_textview)
         val averageTextView = findViewById<TextView>(R.id.details_film_vote_average_textview)
         val languageTextView = findViewById<TextView>(R.id.details_film_original_language_textview)
+//        val favImageView = findViewById<ImageView>(R.id.details_film_fav_imageview)
+        favImageView = findViewById<ImageView>(R.id.details_film_fav_imageview)
 
         val layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
 
@@ -121,6 +127,53 @@ class DetailsFilmActivity : AppCompatActivity() {
                     true
                 }
                 else -> false
+            }
+        }
+
+        appDatabase = AppDatabase.getInstance(this@DetailsFilmActivity)
+        val favFilmObjectToDisplay = film
+
+        var favFilmsToDisplay: Film?
+        if (favFilmObjectToDisplay != null) {
+            runBlocking {
+                withContext(Dispatchers.IO) {
+                    favFilmsToDisplay = appDatabase.filmDao().findFilmsById(film.id)
+                }
+            }
+            if (favFilmsToDisplay == null) {
+                favImageView.setImageResource(R.drawable.baseline_favorite_border_24)
+            } else {
+                favImageView.setImageResource(R.drawable.baseline_favorite_24)
+            }
+        }
+
+        favImageView.addFav {
+            val appDatabase = AppDatabase.getInstance(this@DetailsFilmActivity)
+            val favFilmObject = film
+
+            var filmCherche: Film?
+            if (favFilmObject != null) {
+                runBlocking {
+                    withContext(Dispatchers.IO) {
+                        filmCherche = appDatabase.filmDao().findFilmsById(favFilmObject.id)
+                    }
+                }
+                if (filmCherche == null) {
+                    // le film est à ajouter
+                    runBlocking {
+                        withContext(Dispatchers.IO) {
+                            appDatabase.filmDao().insert(film)
+                        }
+                    }
+                    favImageView.setImageResource(R.drawable.baseline_favorite_24)
+                } else {
+                    runBlocking {
+                        withContext(Dispatchers.IO) {
+                            appDatabase.filmDao().delete(film)
+                        }
+                    }
+                    favImageView.setImageResource(R.drawable.baseline_favorite_border_24)
+                }
             }
         }
     }
