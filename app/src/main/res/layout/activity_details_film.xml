@@ -18,7 +18,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_begin="175dp" />
+        app:layout_constraintGuide_begin="160dp" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline_film_horizontal_basse"
@@ -30,8 +30,8 @@
 
     <ImageView
         android:id="@+id/details_film_imageview"
-        android:layout_width="160dp"
-        android:layout_height="160dp"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
         android:scaleType="fitXY"
         app:layout_constraintBottom_toBottomOf="@id/guideline_film_horizontal"
         app:layout_constraintEnd_toEndOf="@id/guideline_film_vertical"
@@ -41,16 +41,30 @@
         app:layout_constraintVertical_bias="0.484"
         tools:srcCompat="@tools:sample/avatars" />
 
+
     <TextView
         android:id="@+id/details_film_title_textview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="@id/details_film_release_textview"
+        app:layout_constraintBottom_toBottomOf="@id/guideline_film_horizontal"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.03"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@id/guideline_film_vertical"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.533"
+        app:layout_constraintVertical_bias="0.102"
+        tools:text="@tools:sample/last_names"
+        android:layout_marginEnd="15dp"/>
+
+    <TextView
+        android:id="@+id/details_film_vote_average_textview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@id/guideline_film_horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@id/guideline_film_vertical"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.365"
         tools:text="@tools:sample/last_names" />
 
     <TextView
@@ -59,22 +73,36 @@
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="@id/guideline_film_horizontal"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.034"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@id/guideline_film_vertical"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.371"
+        app:layout_constraintVertical_bias="0.615"
+        tools:text="@tools:sample/last_names" />
+
+    <TextView
+        android:id="@+id/details_film_original_language_textview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@id/guideline_film_horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@id/guideline_film_vertical"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.878"
         tools:text="@tools:sample/last_names" />
 
     <TextView
         android:id="@+id/details_film_overview_textview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="5dp"
         app:layout_constraintBottom_toBottomOf="@id/guideline_film_horizontal_basse"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.036"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/guideline_film_horizontal"
-        app:layout_constraintVertical_bias="0.036"
+        app:layout_constraintVertical_bias="0.0"
         tools:text="@tools:sample/last_names" />
 
     <androidx.recyclerview.widget.RecyclerView
