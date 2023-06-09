@@ -75,7 +75,7 @@ dependencies {
     //Library to get URL Meta Data
     implementation 'org.jsoup:jsoup:1.13.1'
 
-    //test 2 qrcode
+    //QR code
     implementation 'com.google.zxing:core:3.4.1'
     implementation 'com.journeyapps:zxing-android-embedded:4.2.0'
 
