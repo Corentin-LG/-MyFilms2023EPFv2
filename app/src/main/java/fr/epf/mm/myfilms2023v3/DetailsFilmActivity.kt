@@ -15,8 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import fr.epf.mm.myfilms2023v3.model.AppDatabase
-import fr.epf.mm.myfilms2023v3.model.Film
+import fr.epf.mm.myfilms2023v3.model.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
@@ -28,6 +27,7 @@ private const val PICTURE_REQUEST_CODE = 100
 class DetailsFilmActivity : AppCompatActivity() {
 
     val apiKey = "003dbf4d555d5ab3a9f692a799bf78bb"
+    lateinit var appGenresDatabase: GenresDatabase
 
     lateinit var imageView: ImageView
     lateinit var recyclerView: RecyclerView
@@ -38,6 +38,8 @@ class DetailsFilmActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_details_film)
 
+        appGenresDatabase = AppGenresDatabase.getInstance(this)
+
         val IMAGE_BASE = "https://image.tmdb.org/t/p/w500/"
 
         val titleTextView = findViewById<TextView>(R.id.details_film_title_textview)
@@ -45,7 +47,7 @@ class DetailsFilmActivity : AppCompatActivity() {
         val overviewTextView = findViewById<TextView>(R.id.details_film_overview_textview)
         val averageTextView = findViewById<TextView>(R.id.details_film_vote_average_textview)
         val languageTextView = findViewById<TextView>(R.id.details_film_original_language_textview)
-        val genreID1TextView= findViewById<TextView>(R.id.details_film_genreID1_textview)
+        val genreID1TextView = findViewById<TextView>(R.id.details_film_genreID1_textview)
         favImageView = findViewById<ImageView>(R.id.details_film_fav_imageview)
 
         val layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
@@ -75,7 +77,7 @@ class DetailsFilmActivity : AppCompatActivity() {
             overviewTextView.text = "Voici le résultat de la recherche :"
             averageTextView.text = ""
             languageTextView.text = ""
-            genreID1TextView.text =""
+            genreID1TextView.text = ""
             imageView.setImageDrawable(
                 resources.getDrawable(
                     R.drawable.baseline_search_24,
@@ -106,11 +108,47 @@ class DetailsFilmActivity : AppCompatActivity() {
 
             val genre1 = film?.genreID1
             if (genre1 != null) {
-                val formattedGenre1 = "Genre : ${genre1}."
-                genreID1TextView.text = formattedGenre1
+                val retrofitGenres = Retrofit.Builder()
+                    .addConverterFactory(MoshiConverterFactory.create())
+                    .baseUrl("https://api.themoviedb.org")
+                    .build()
+
+                val service1 = retrofitGenres.create(GenresService::class.java)
+                Log.d("ExceptionGenres", "1.0")
+                runBlocking {
+                    try {
+                        val genress = service1.getGenress("/3/genre/movie/list?api_key=$apiKey").genres.map {
+                            Genres(
+                                it.id,
+                                it.name
+                            )
+                        }
+                        Log.d("ExceptionGenres", "1.1${genress.toString()}")
+                        var genreFound: String? = null
+                        for (g in genress) {
+                            if (g.id.toString().equals(genre1.toString())) {
+                                genreFound = g.name
+                                break
+                            }
+                        }
+
+                        if (genreFound != null) {
+                            val formattedGenre1 = "Genre : $genreFound."
+                            Log.d("ExceptionGenres", genreFound)
+                            genreID1TextView.text = formattedGenre1
+                        } else {
+                            genreID1TextView.text = "Genre : ?"
+                            Log.d("ExceptionGenres", "non")
+                        }
+                    } catch (e: Exception) {
+                        Log.d("ExceptionGenres", e.message!!)
+                    }
+                }
             } else {
-                genreID1TextView.text = "Non renseigné"
+                genreID1TextView.text = "Genre : ?"
             }
+
+
 
             film?.let { Glide.with(imageView).load(IMAGE_BASE + it.poster).into(imageView) }
 
@@ -234,7 +272,7 @@ class DetailsFilmActivity : AppCompatActivity() {
             try {
                 val films =
                     //service.getFilms("/3/discover/movie?api_key=$apiKey&with_genres=${film?.genreID1}").results.map { // recommendation par genre
-                        service.getFilms("https://api.themoviedb.org/3/movie/${film?.id}/recommendations?api_key=$apiKey").results.map {
+                    service.getFilms("https://api.themoviedb.org/3/movie/${film?.id}/recommendations?api_key=$apiKey").results.map {
                         Film(
                             it.id,
                             it.title,
