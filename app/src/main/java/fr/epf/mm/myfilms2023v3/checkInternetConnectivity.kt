@@ -34,6 +34,9 @@ object InternetConnectivityChecker {
                 context.startActivity(Intent(Settings.ACTION_WIFI_SETTINGS))
                 dialog.dismiss()
             }
+            .setNeutralButton("Annuler") { dialog: DialogInterface, _: Int ->
+                dialog.dismiss()
+            }
             .setCancelable(false)
             .show()
     }
