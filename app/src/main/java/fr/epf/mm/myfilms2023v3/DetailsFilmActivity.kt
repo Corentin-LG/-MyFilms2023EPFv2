@@ -224,7 +224,8 @@ class DetailsFilmActivity : AppCompatActivity() {
         runBlocking {
             try {
                 val films =
-                    service.getFilms("/3/discover/movie?api_key=$apiKey&with_genres=${film?.genreID1}").results.map {
+                    //service.getFilms("/3/discover/movie?api_key=$apiKey&with_genres=${film?.genreID1}").results.map { // recommendation par genre
+                        service.getFilms("https://api.themoviedb.org/3/movie/${film?.id}/recommendations?api_key=$apiKey").results.map {
                         Film(
                             it.id,
                             it.title,
