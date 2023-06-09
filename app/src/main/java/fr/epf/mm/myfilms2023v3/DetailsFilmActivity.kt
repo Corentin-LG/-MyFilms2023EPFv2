@@ -1,5 +1,6 @@
 package fr.epf.mm.myfilms2023v3
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.Bitmap
 import androidx.appcompat.app.AppCompatActivity
@@ -44,7 +45,7 @@ class DetailsFilmActivity : AppCompatActivity() {
         val overviewTextView = findViewById<TextView>(R.id.details_film_overview_textview)
         val averageTextView = findViewById<TextView>(R.id.details_film_vote_average_textview)
         val languageTextView = findViewById<TextView>(R.id.details_film_original_language_textview)
-//        val favImageView = findViewById<ImageView>(R.id.details_film_fav_imageview)
+        val genreID1TextView= findViewById<TextView>(R.id.details_film_genreID1_textview)
         favImageView = findViewById<ImageView>(R.id.details_film_fav_imageview)
 
         val layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
@@ -74,6 +75,7 @@ class DetailsFilmActivity : AppCompatActivity() {
             overviewTextView.text = "Voici le résultat de la recherche :"
             averageTextView.text = ""
             languageTextView.text = ""
+            genreID1TextView.text =""
             imageView.setImageDrawable(
                 resources.getDrawable(
                     R.drawable.baseline_search_24,
@@ -85,6 +87,7 @@ class DetailsFilmActivity : AppCompatActivity() {
             titleTextView.text = film?.title ?: "Non renseigné"
             releaseTextView.text = film?.release ?: "Non renseigné"
             overviewTextView.text = film?.overview ?: "Non renseigné"
+
             val voteAverage = film?.vote_average
             if (voteAverage != null) {
                 val formattedVoteAverage = "$voteAverage/10"
@@ -92,16 +95,22 @@ class DetailsFilmActivity : AppCompatActivity() {
             } else {
                 averageTextView.text = "Non renseigné"
             }
-            val originalLanguage = film?.original_language
 
+            val originalLanguage = film?.original_language
             if (originalLanguage != null) {
                 val formattedLanguage = "Langage : ${originalLanguage}."
                 languageTextView.text = formattedLanguage
             } else {
                 languageTextView.text = "Non renseigné"
             }
-//            averageTextView.text = film?.vote_average.toString() ?: "Non renseigné"
-//            languageTextView.text = film?.original_language ?: "Non renseigné"
+
+            val genre1 = film?.genreID1
+            if (genre1 != null) {
+                val formattedGenre1 = "Genre : ${genre1}."
+                genreID1TextView.text = formattedGenre1
+            } else {
+                genreID1TextView.text = "Non renseigné"
+            }
 
             film?.let { Glide.with(imageView).load(IMAGE_BASE + it.poster).into(imageView) }
 
